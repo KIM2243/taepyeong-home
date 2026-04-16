@@ -62,6 +62,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
             <a href="#products" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>제품소개</a>
             <a href="#value" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>핵심역량</a>
             <a href="#location" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>오시는길</a>
+            <Link href="/admin/login" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>관리자</Link>
           </nav>
 
           <button className="btn-header-cta" onClick={() => setInquiryModalOpen(true)}>
@@ -144,9 +145,6 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                   <a href="tel:02-6954-7988" className="btn-hero-main">
                     전화 문의 <Phone size={18} />
                   </a>
-                  <Link href="/admin/login" className="btn-hero-sub">
-                    관리자
-                  </Link>
                 </div>
               </div>
             </div>
