@@ -62,7 +62,6 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
             <a href="#products" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>제품소개</a>
             <a href="#value" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>핵심역량</a>
             <a href="#location" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>오시는길</a>
-            <Link href="/admin/login" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>관리자</Link>
           </nav>
 
           <button className="btn-header-cta" onClick={() => setInquiryModalOpen(true)}>
@@ -137,7 +136,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                   <h1 className="hero-title" style={{ color: configs.hero_title_color || '#ffffff' }} dangerouslySetInnerHTML={{ 
                     __html: configs.hero_title || '자연의 신선함을<br/><span class="title-accent">식탁까지 안전하게</span>' 
                   }} />
-                  <p className="hero-description" style={{ color: configs.hero_desc_color || '#e2e8f0' }} dangerouslySetInnerHTML={{ 
+                  <div className="hero-description" style={{ color: configs.hero_desc_color || '#e2e8f0' }} dangerouslySetInnerHTML={{ 
                     __html: configs.hero_description || '(주)태평프레시는 최첨단 저온 물류 시스템을 통해<br/>산지의 신선함을 고객님께 그대로 전달합니다.'
                   }} />
                 </div>
@@ -298,6 +297,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
               <a href="#top">회사소개</a>
               <a href="#products">제품소개</a>
               <a href="#location">오시는길</a>
+              <Link href="/admin/login">관리자</Link>
             </div>
           </div>
           <div className="footer-divider" />
@@ -422,7 +422,7 @@ function ValueCard({ icon, title, desc, num }: { icon: React.ReactNode, title: s
         {icon}
       </div>
       <h4 className="value-card-title">{title}</h4>
-      <p className="value-card-desc" dangerouslySetInnerHTML={{ __html: desc }} />
+      <div className="value-card-desc" dangerouslySetInnerHTML={{ __html: desc }} />
     </div>
   );
 }
