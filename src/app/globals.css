@@ -458,7 +458,7 @@ h1, h2, h3, h4, .font-display {
 .btn-hero-main {
   background: linear-gradient(135deg, var(--primary), #0077a8);
   color: white;
-  padding: 14px 32px;
+  padding: 14px 24px;
   border-radius: 50px;
   font-weight: 700;
   font-size: 0.95rem;
@@ -468,8 +468,8 @@ h1, h2, h3, h4, .font-display {
   gap: 10px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(0,91,130,0.3);
-  min-width: 220px;
-  width: 220px;
+  min-width: 190px;
+  width: 190px;
   white-space: nowrap;
 }
 
@@ -904,7 +904,7 @@ h1, h2, h3, h4, .font-display {
 .btn-cta-primary {
   background: linear-gradient(135deg, var(--primary), #0077a8);
   color: white;
-  padding: 14px 32px;
+  padding: 14px 24px;
   border-radius: 50px;
   font-weight: 700;
   display: flex;
@@ -913,8 +913,8 @@ h1, h2, h3, h4, .font-display {
   gap: 10px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(0,91,130,0.3);
-  width: 220px;
-  min-width: 220px;
+  width: 190px;
+  min-width: 190px;
   white-space: nowrap;
 }
 
