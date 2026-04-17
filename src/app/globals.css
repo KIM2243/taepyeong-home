@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Black+Han+Sans&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Bagel+Fat+One&display=swap');
 
 :root {
   /* Color System - Deep Blue Brand */
@@ -363,10 +363,17 @@ h1, h2, h3, h4, .font-display {
 .hero-title {
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   line-height: 1.1;
-  font-weight: 800;
+  font-weight: 300; /* Light base for better contrast */
   color: white;
   margin-bottom: 24px;
   text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  letter-spacing: -0.01em;
+}
+
+.hero-title strong,
+.hero-title b {
+  font-weight: 900;
+  letter-spacing: -0.03em;
 }
 
 .hero-subtitle {
@@ -447,6 +454,96 @@ h1, h2, h3, h4, .font-display {
 
 .text-highlight {
   color: var(--primary);
+}
+
+/* --- Quill Font System --- */
+.ql-font-blackhansans { font-family: 'Black Han Sans', sans-serif !important; }
+.ql-font-notosanskr { font-family: 'Noto Sans KR', sans-serif !important; }
+.ql-font-nanumgothic { font-family: 'Nanum Gothic', sans-serif !important; }
+.ql-font-nanummyeongjo { font-family: 'Nanum Myeongjo', serif !important; }
+.ql-font-nanumpen { font-family: 'Nanum Pen Script', cursive !important; }
+.ql-font-bagelfat { font-family: 'Bagel Fat One', system-ui !important; }
+
+/* Weight Presets */
+.ql-font-thin { font-weight: 100 !important; }
+.ql-font-normal { font-weight: 400 !important; }
+.ql-font-thick { font-weight: 900 !important; }
+
+/* Font usage in normal text */
+.font-black-han { font-family: 'Black Han Sans', sans-serif; }
+.font-noto-sans { font-family: 'Noto Sans KR', sans-serif; }
+.font-nanum-pen { font-family: 'Nanum Pen Script', cursive; }
+.font-bagel-fat { font-family: 'Bagel Fat One', system-ui; }
+
+/* Quill Picker Styles */
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: '기본 폰트';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="blackhansans"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="blackhansans"]::before {
+  content: 'Black Han Sans';
+  font-family: 'Black Han Sans', sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="notosanskr"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="notosanskr"]::before {
+  content: 'Noto Sans KR';
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="nanumgothic"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="nanumgothic"]::before {
+  content: 'Nanum Gothic';
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="nanummyeongjo"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="nanummyeongjo"]::before {
+  content: 'Nanum Myeongjo';
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="nanumpen"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="nanumpen"]::before {
+  content: 'Nanum Pen Script';
+  font-family: 'Nanum Pen Script', cursive;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="bagelfat"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="bagelfat"]::before {
+  content: 'Bagel Fat One';
+  font-family: 'Bagel Fat One', system-ui;
+}
+
+/* Weight Picker Labels */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="thin"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="thin"]::before {
+  content: '얇게 (Thin)';
+  font-weight: 100;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="normal"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="normal"]::before {
+  content: '보통 (Normal)';
+  font-weight: 400;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="thick"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="thick"]::before {
+  content: '두껍게 (Thick)';
+  font-weight: 900;
+}
+
+.dark-editor .ql-container {
+  background-color: #0f172a !important; /* Dark slate */
+}
+.dark-editor .ql-editor {
+  color: white !important;
+}
+.dark-editor .ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .hero-actions {

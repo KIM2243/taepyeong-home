@@ -78,6 +78,9 @@ export default function SlideManagement() {
                   <td className="text-muted">{slide.description}</td>
                   <td>
                     <div className="table-actions">
+                      <Link href={`/admin/slides/${slide.id}/edit`} className="btn-icon" title="수정">
+                        <Edit2 size={18} />
+                      </Link>
                       <button className="btn-icon" title="순서변경"><ArrowUpDown size={18} /></button>
                       <button className="btn-icon text-danger" title="삭제" onClick={() => handleDelete(slide.id)}>
                         <Trash2 size={18} />

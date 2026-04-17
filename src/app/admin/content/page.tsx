@@ -2,24 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Save, AlertCircle, LayoutTemplate, MessageSquare, Info } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import 'react-quill/dist/quill.snow.css';
-
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-
-const quillModules = {
-  toolbar: [
-    [{ size: ['small', false, 'large', 'huge'] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ['clean']
-  ],
-};
-
-const quillFormats = [
-  'size', 'bold', 'italic', 'underline', 'strike', 'color', 'background', 'align'
-];
+import CustomEditor from '@/components/admin/CustomEditor';
 
 export default function AdminContentSettings() {
   const [config, setConfig] = useState<Record<string, string>>({});
@@ -107,13 +90,13 @@ export default function AdminContentSettings() {
                 <div className="form-group">
                   <label className="label">메인 타이틀 <span style={{ color: '#94a3b8', fontWeight: 400, textTransform: 'lowercase' }}>(서식 적용 가능)</span></label>
                   <div style={{ background: 'white' }}>
-                    <ReactQuill theme="snow" modules={quillModules} formats={quillFormats} value={config.hero_title || ''} onChange={(val: string) => handleConfigChange('hero_title', val)} placeholder="자연의 신선함을 식탁까지 안전하게" />
+                    <CustomEditor variant="dark" value={config.hero_title || ''} onChange={(val: string) => handleConfigChange('hero_title', val)} placeholder="자연의 신선함을 식탁까지 안전하게" />
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="label">하단 설명 내용 <span style={{ color: '#94a3b8', fontWeight: 400, textTransform: 'lowercase' }}>(서식 적용 가능)</span></label>
                   <div style={{ background: 'white' }}>
-                    <ReactQuill theme="snow" modules={quillModules} formats={quillFormats} value={config.hero_description || ''} onChange={(val: string) => handleConfigChange('hero_description', val)} placeholder="(주)태평프레시는 최첨단 저온 물류 시스템을 통해..." />
+                    <CustomEditor variant="dark" value={config.hero_description || ''} onChange={(val: string) => handleConfigChange('hero_description', val)} placeholder="(주)태평프레시는 최첨단 저온 물류 시스템을 통해..." />
                   </div>
                 </div>
               </div>
@@ -155,7 +138,7 @@ export default function AdminContentSettings() {
                       <div className="form-group">
                         <label className="label" style={{ fontSize: '0.75rem' }}>상세 설명 <span style={{ color: '#94a3b8', fontWeight: 400, textTransform: 'lowercase' }}>(서식 적용 가능)</span></label>
                         <div style={{ background: 'white' }}>
-                          <ReactQuill theme="snow" modules={quillModules} formats={quillFormats} value={config[`v${num}_desc`] || ''} onChange={(val: string) => handleConfigChange(`v${num}_desc`, val)} placeholder="설명을 입력하세요" />
+                          <CustomEditor value={config[`v${num}_desc`] || ''} onChange={(val: string) => handleConfigChange(`v${num}_desc`, val)} placeholder="설명을 입력하세요" />
                         </div>
                       </div>
                     </div>

@@ -1,14 +1,18 @@
 "use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Save, ArrowLeft, Image as ImageIcon, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { Save, ArrowLeft, Image as ImageIcon, X } from 'lucide-react';
 import Link from 'next/link';
 import CustomEditor from '@/components/admin/CustomEditor';
 
-export default function NewSlide() {
+export default function EditSlide() {
   const router = useRouter();
+  const params = useParams();
+  const slideId = params.id as string;
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
   const [formData, setFormData] = useState({
     accent: '',
     title: '',
@@ -16,13 +20,40 @@ export default function NewSlide() {
     imageUrl: ''
   });
 
+  useEffect(() => {
+    const fetchSlide = async () => {
+      try {
+        const res = await fetch(`/api/admin/slides`);
+        const slides = await res.json();
+        const slide = slides.find((s: any) => s.id === slideId);
+        
+        if (slide) {
+          setFormData({
+            accent: slide.accent || '',
+            title: slide.title || '',
+            description: slide.description || '',
+            imageUrl: slide.imageUrl || ''
+          });
+        } else {
+          alert('슬라이드를 찾을 수 없습니다.');
+          router.push('/admin/slides');
+        }
+      } catch (err) {
+        console.error('Failed to fetch slide');
+      } finally {
+        setIsFetching(false);
+      }
+    };
+    fetchSlide();
+  }, [slideId, router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/admin/slides', {
-        method: 'POST',
+      const res = await fetch(`/api/admin/slides/${slideId}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
@@ -41,6 +72,8 @@ export default function NewSlide() {
     }
   };
 
+  if (isFetching) return <div className="admin-page-container"><p>로딩 중...</p></div>;
+
   return (
     <div className="admin-page-container">
       <div className="page-header">
@@ -49,8 +82,8 @@ export default function NewSlide() {
              <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1>새 슬라이드 등록</h1>
-            <p>메인 화면의 히어로 섹션에 활기를 불어넣을 새로운 콘텐츠를 만듭니다.</p>
+            <h1>슬라이드 수정</h1>
+            <p>메인 화면의 히어로 섹션 콘텐츠를 수정합니다.</p>
           </div>
         </div>
       </div>
@@ -104,17 +137,13 @@ export default function NewSlide() {
                 onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
                 required
               />
-              <button type="button" className="btn-secondary" onClick={() => window.open('/admin/storage', '_blank')}>
-                <ImageIcon size={18} />
-                이미지함
-              </button>
             </div>
           </div>
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={isLoading}>
               <Save size={18} />
-              {isLoading ? '저장 중...' : '슬라이드 저장'}
+              {isLoading ? '저장 중...' : '변경사항 저장'}
             </button>
           </div>
         </form>
