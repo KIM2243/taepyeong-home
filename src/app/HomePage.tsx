@@ -165,8 +165,32 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                   <motion.a 
                     href="tel:02-6954-7988" 
                     className="btn-hero-main"
+                    onMouseEnter={() => setHeroHovered(true)}
+                    onMouseLeave={() => setHeroHovered(false)}
                   >
-                    <Phone size={18} /> 전화 문의
+                    <AnimatePresence mode="wait">
+                      {!heroHovered ? (
+                        <motion.span 
+                          key="default"
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="btn-inner-content"
+                        >
+                          <Phone size={18} /> 전화 문의
+                        </motion.span>
+                      ) : (
+                        <motion.span 
+                          key="hover"
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="btn-inner-content"
+                        >
+                          <Phone size={18} /> 02-6954-7988
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </motion.a>
                   <motion.button 
                     onClick={() => setInquiryModalOpen(true)}
