@@ -162,9 +162,18 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                   transition={{ delay: 0.8 }}
                   className="hero-actions"
                 >
-                  <button className="btn-hero-main">
-                    자세히 보기 <ArrowRight size={20} />
-                  </button>
+                  <motion.a 
+                    href="tel:02-6954-7988" 
+                    className="btn-hero-main"
+                  >
+                    <Phone size={18} /> 전화 문의
+                  </motion.a>
+                  <motion.button 
+                    onClick={() => setInquiryModalOpen(true)}
+                    className="btn-hero-sub"
+                  >
+                    <MessageCircle size={18} /> 이메일 문의
+                  </motion.button>
                 </motion.div>
               </div>
             </motion.div>
@@ -213,6 +222,12 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                       )}
                     </AnimatePresence>
                   </motion.a>
+                  <motion.button 
+                    onClick={() => setInquiryModalOpen(true)}
+                    className="btn-hero-sub"
+                  >
+                    <MessageCircle size={18} /> 이메일 문의
+                  </motion.button>
                 </div>
               </div>
             </div>
