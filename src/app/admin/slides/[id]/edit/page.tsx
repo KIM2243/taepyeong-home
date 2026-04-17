@@ -36,7 +36,7 @@ export default function EditSlide() {
           });
         } else {
           alert('슬라이드를 찾을 수 없습니다.');
-          router.push('/admin/slides');
+          router.push('/admin/content');
         }
       } catch (err) {
         console.error('Failed to fetch slide');
@@ -59,7 +59,8 @@ export default function EditSlide() {
       });
 
       if (res.ok) {
-        router.push('/admin/slides');
+        alert('슬라이드가 성공적으로 수정되었습니다.');
+        router.push('/admin/content');
         router.refresh();
       } else {
         const error = await res.json();
@@ -76,14 +77,14 @@ export default function EditSlide() {
 
   return (
     <div className="admin-page-container">
-      <div className="page-header">
-        <div className="flex items-center gap-10">
-          <Link href="/admin/slides" className="btn-icon">
+      <div className="page-header" style={{ marginBottom: '30px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <Link href="/admin/content" className="btn-icon">
              <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1>슬라이드 수정</h1>
-            <p>메인 화면의 히어로 섹션 콘텐츠를 수정합니다.</p>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1e293b' }}>슬라이드 수정</h1>
+            <p className="text-muted">메인 히어로 섹션의 콘텐츠를 수정하여 분위기를 새롭게 바꿉니다.</p>
           </div>
         </div>
       </div>

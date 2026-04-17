@@ -9,7 +9,7 @@ const ReactQuill = dynamic(async () => {
   const { default: RQ } = await import('react-quill');
   
   // Register custom fonts with Quill
-  const Quill = RQ.Quill;
+  const Quill = (RQ as any).Quill;
   if (Quill) {
     const Font = Quill.import('formats/font');
     Font.whitelist = [

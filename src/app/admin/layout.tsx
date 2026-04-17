@@ -17,7 +17,6 @@ import {
 
 const NAV_ITEMS = [
   { href: '/admin/products', icon: Package, label: '제품 관리', match: '/products' },
-  { href: '/admin/slides', icon: Layers, label: '메인 슬라이드', match: '/slides' },
   { href: '/admin/content', icon: Layout, label: '랜딩 문구 관리', match: '/content' },
   { href: '/admin/inquiry', icon: MessageCircle, label: '온라인 문의', match: '/inquiry' },
   { href: '/admin/settings', icon: Settings, label: '환경 설정', match: '/settings' },

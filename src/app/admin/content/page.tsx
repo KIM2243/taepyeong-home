@@ -1,17 +1,45 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Save, AlertCircle, LayoutTemplate, MessageSquare, Info } from 'lucide-react';
+import Link from 'next/link';
+import { Save, AlertCircle, LayoutTemplate, MessageSquare, Info, Plus, Trash2, Edit2, ArrowUpDown } from 'lucide-react';
 import CustomEditor from '@/components/admin/CustomEditor';
 
 export default function AdminContentSettings() {
   const [config, setConfig] = useState<Record<string, string>>({});
+  const [slides, setSlides] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSlidesLoading, setIsSlidesLoading] = useState(true);
 
   useEffect(() => {
     fetchConfig();
+    fetchSlides();
   }, []);
+
+  const fetchSlides = async () => {
+    try {
+      const res = await fetch('/api/admin/slides');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setSlides(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch slides');
+    } finally {
+      setIsSlidesLoading(false);
+    }
+  };
+
+  const handleDeleteSlide = async (id: string) => {
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+    try {
+      await fetch(`/api/admin/slides/${id}`, { method: 'DELETE' });
+      setSlides(slides.filter(s => s.id !== id));
+    } catch (err) {
+      alert('삭제 실패');
+    }
+  };
 
   const fetchConfig = async () => {
     try {
@@ -75,30 +103,65 @@ export default function AdminContentSettings() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
           
-          {/* ----- Hero Section Card ----- */}
+          {/* ----- Hero Section Card (Slide Management) ----- */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', paddingLeft: '4px' }}>
-              <LayoutTemplate color="#475569" size={20} />
-              <h3 style={{ fontWeight: 700, color: '#1e293b', fontSize: '1.15rem', margin: 0 }}>메인 히어로 섹션</h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', paddingLeft: '4px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <LayoutTemplate color="#475569" size={20} />
+                <h3 style={{ fontWeight: 700, color: '#1e293b', fontSize: '1.15rem', margin: 0 }}>메인 히어로 섹션 (슬라이드)</h3>
+              </div>
+              <Link href="/admin/slides/new" className="btn-add" style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
+                <Plus size={16} />
+                <span>슬라이드 추가</span>
+              </Link>
             </div>
-            <div className="content-card p-30">
-              <div className="admin-form" style={{ maxWidth: '800px' }}>
-                <div className="form-group">
-                  <label className="label">상단 소제목 (ACCENT)</label>
-                  <input type="text" value={config.hero_accent || ''} onChange={e => handleConfigChange('hero_accent', e.target.value)} placeholder="PREMIUM FRESH LOGISTICS" className="input" />
-                </div>
-                <div className="form-group">
-                  <label className="label">메인 타이틀 <span style={{ color: '#94a3b8', fontWeight: 400, textTransform: 'lowercase' }}>(서식 적용 가능)</span></label>
-                  <div style={{ background: 'white' }}>
-                    <CustomEditor variant="dark" value={config.hero_title || ''} onChange={(val: string) => handleConfigChange('hero_title', val)} placeholder="자연의 신선함을 식탁까지 안전하게" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="label">하단 설명 내용 <span style={{ color: '#94a3b8', fontWeight: 400, textTransform: 'lowercase' }}>(서식 적용 가능)</span></label>
-                  <div style={{ background: 'white' }}>
-                    <CustomEditor variant="dark" value={config.hero_description || ''} onChange={(val: string) => handleConfigChange('hero_description', val)} placeholder="(주)태평프레시는 최첨단 저온 물류 시스템을 통해..." />
-                  </div>
-                </div>
+            <div className="content-card">
+              <div className="table-responsive">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '60px' }}>순서</th>
+                      <th>이미지</th>
+                      <th>소제목 (ACCENT)</th>
+                      <th>메인 제목</th>
+                      <th>관리</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {isSlidesLoading ? (
+                      <tr><td colSpan={5} className="text-center py-20">슬라이드를 불러오는 중...</td></tr>
+                    ) : slides.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="text-center py-20 text-muted">
+                          등록된 슬라이드가 없습니다. 우측 상단의 [슬라이드 추가] 버튼을 눌러주세요.
+                        </td>
+                      </tr>
+                    ) : (
+                      slides.map((slide, index) => (
+                        <tr key={slide.id}>
+                          <td style={{ textAlign: 'center' }}>{index + 1}</td>
+                          <td>
+                            <div className="table-img-box" style={{ width: '80px', height: '45px' }}>
+                              <img src={slide.imageUrl} alt={slide.title} />
+                            </div>
+                          </td>
+                          <td><span className="badge blue-seal">{slide.accent}</span></td>
+                          <td><div dangerouslySetInnerHTML={{ __html: slide.title }} style={{ fontSize: '0.9rem', fontWeight: 600 }} /></td>
+                          <td>
+                            <div className="table-actions">
+                              <Link href={`/admin/slides/${slide.id}/edit`} className="btn-icon" title="수정">
+                                <Edit2 size={18} />
+                              </Link>
+                              <button className="btn-icon text-danger" title="삭제" onClick={() => handleDeleteSlide(slide.id)}>
+                                <Trash2 size={18} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

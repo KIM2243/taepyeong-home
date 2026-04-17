@@ -58,18 +58,14 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8">
-        <div className="content-card max-w-xl">
-          <div className="settings-section p-6 md:p-8">
-            <div className="section-title-group mb-6">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <Lock size={20} />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-foreground">비밀번호 변경</h3>
-                <p className="text-sm text-foreground/50">계정 보안을 위해 비밀번호를 주기적으로 변경하는 것을 권장합니다.</p>
-              </div>
-            </div>
+      <div className="max-w-2xl" style={{ marginTop: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', paddingLeft: '4px' }}>
+          <Lock color="#475569" size={20} />
+          <h3 style={{ fontWeight: 700, color: '#1e293b', fontSize: '1.25rem', margin: 0 }}>비밀번호 변경</h3>
+        </div>
+        
+        <div className="content-card p-10 md:p-40">
+          <div className="settings-section">
 
             <form onSubmit={handleChangePassword} className="admin-form settings-form space-y-6">
               <div className="input-field">

@@ -28,8 +28,8 @@ export default function NewSlide() {
       });
 
       if (res.ok) {
-        router.push('/admin/slides');
-        router.refresh();
+        alert('슬라이드가 성공적으로 등록되었습니다.');
+        router.push('/admin/content');
       } else {
         const error = await res.json();
         alert(error.error || '저장 실패');
@@ -43,14 +43,14 @@ export default function NewSlide() {
 
   return (
     <div className="admin-page-container">
-      <div className="page-header">
-        <div className="flex items-center gap-10">
-          <Link href="/admin/slides" className="btn-icon">
-             <ArrowLeft size={20} />
+      <div className="page-header" style={{ marginBottom: '30px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <Link href="/admin/content" className="btn-icon">
+            <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1>새 슬라이드 등록</h1>
-            <p>메인 화면의 히어로 섹션에 활기를 불어넣을 새로운 콘텐츠를 만듭니다.</p>
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1e293b' }}>새 슬라이드 등록</h1>
+            <p className="text-muted">메인 화면의 히어로 섹션에 활기를 불어넣을 새로운 콘텐츠를 만듭니다.</p>
           </div>
         </div>
       </div>
