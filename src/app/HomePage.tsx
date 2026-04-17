@@ -120,8 +120,12 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.8 }}
-              style={{ backgroundImage: `url(${slides[currentSlide].imageUrl})` }}
+              style={{ 
+                backgroundImage: slides[currentSlide].imageUrl ? `url(${slides[currentSlide].imageUrl})` : 'none',
+                backgroundColor: !slides[currentSlide].imageUrl ? '#001a2c' : 'transparent'
+              }}
             >
+              {!slides[currentSlide].imageUrl && <div className="default-hero-bg" />}
               <div className="hero-overlay" />
               <div className="hero-content container">
                 <div className="hero-text-block">

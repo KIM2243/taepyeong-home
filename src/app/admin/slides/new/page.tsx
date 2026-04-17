@@ -95,18 +95,22 @@ export default function NewSlide() {
 
           <div className="form-group mb-30">
             <label className="label">배경 이미지 URL</label>
-            <div className="flex gap-10">
+            <div style={{ display: 'flex', gap: '8px' }}>
               <input 
                 type="text" 
                 className="input" 
-                placeholder="https://..." 
+                placeholder="https://... (입력하지 않으면 기본 배경색이 적용됩니다)" 
                 value={formData.imageUrl}
                 onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
-                required
               />
-              <button type="button" className="btn-secondary" onClick={() => window.open('/admin/storage', '_blank')}>
+              <button 
+                type="button" 
+                className="btn-secondary" 
+                onClick={() => window.open('/admin/storage', '_blank')}
+                style={{ whiteSpace: 'nowrap', flexShrink: 0, height: '44px', display: 'flex', alignItems: 'center', gap: '6px' }}
+              >
                 <ImageIcon size={18} />
-                이미지함
+                <span>이미지함</span>
               </button>
             </div>
           </div>
