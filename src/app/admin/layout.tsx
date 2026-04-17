@@ -45,7 +45,6 @@ export default function AdminLayout({
 
   return (
     <div className="admin-shell">
-      {/* --- Dark Sidebar --- */}
       <aside className="admin-sidebar">
         <div className="sidebar-brand">
           {!logoErr ? (
@@ -81,7 +80,6 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* --- Main Area --- */}
       <main className="admin-body">
         <header className="admin-topbar">
           <div className="topbar-left">

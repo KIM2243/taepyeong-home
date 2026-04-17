@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ShieldCheck, Zap, Truck, ChevronUp, ChevronLeft, ChevronRight, Phone, MessageCircle, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import InquiryModal from '@/components/InquiryModal';
 import Link from 'next/link';
 import Script from 'next/script';
-import InquiryModal from '@/components/InquiryModal';
 
 export default function HomePage({ initialConfigs = {}, initialSlides = [], initialCategories = [] }: any) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,7 +38,11 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
   const headerDark = !isScrolled;
 
   return (
-    <div className="layout-wrapper">
+    <div className="home-wrapper">
+      <Script 
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ab92c2392cf2f9d1f29ad4d9f4069d9a&autoload=false"
+        strategy="lazyOnload"
+      />
       {/* --- Header --- */}
       <header className={`header ${isScrolled ? 'header-scrolled' : 'header-transparent'}`}>
         <div className="container header-inner">
@@ -100,6 +104,8 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
           )}
         </AnimatePresence>
       </header>
+
+      <main>
 
       {/* --- Dynamic Hero Slider --- */}
       <section id="top" className="hero-slider-section">
@@ -273,7 +279,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
             <div className="location-detail">
               <div className="detail-item">
                 <span className="detail-label">주소</span>
-                <span className="detail-value">서울특별시 중랑구 용마산로 419, 4층 401호</span>
+                <span className="detail-value">서울특별시 중랑구 용마산로 419, 은현빌딩 (4층 401호)</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">TEL</span>
@@ -315,6 +321,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
           </div>
         </div>
       </section>
+      </main>
 
       {/* --- Footer --- */}
       <footer className="footer">
@@ -327,6 +334,15 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
               <a href="#top">회사소개</a>
               <a href="#products">제품소개</a>
               <a href="#location">오시는길</a>
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open('/privacy', 'privacy', 'width=700,height=800,scrollbars=yes');
+                }}
+              >
+                개인정보처리방침
+              </a>
               <Link href="/admin/login">관리자</Link>
             </div>
           </div>
@@ -451,7 +467,7 @@ function ValueCard({ icon, title, desc, num }: { icon: React.ReactNode, title: s
       <div className="value-icon-box">
         {icon}
       </div>
-      <h4 className="value-card-title">{title}</h4>
+      <h3 className="value-card-title">{title}</h3>
       <div className="value-card-desc" dangerouslySetInnerHTML={{ __html: desc }} />
     </div>
   );
@@ -502,7 +518,7 @@ function KakaoMap() {
 
     try {
       const kakao = (window as any).kakao;
-      const position = new kakao.maps.LatLng(37.5976, 127.0988);
+      const position = new (window as any).kakao.maps.LatLng(37.5890241, 127.0963398);
 
       mapRef.current.innerHTML = '';
 
@@ -513,10 +529,41 @@ function KakaoMap() {
 
       const marker = new kakao.maps.Marker({ position, map });
 
-      const infowindow = new kakao.maps.InfoWindow({
-        content: `<div style="padding:8px 12px;font-size:13px;font-weight:600;white-space:nowrap;color:#333;">(주)태평프레시</div>`,
+      const content = `
+        <div style="
+          position: relative;
+          background: #fff;
+          border: 1px solid #1e293b;
+          border-radius: 6px;
+          padding: 8px 12px;
+          font-size: 15px;
+          font-weight: 800;
+          color: #1e293b;
+          text-align: center;
+          white-space: nowrap;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          transform: translateY(-55px);
+        ">
+          (주)태평프레시
+          <div style="
+            position: absolute;
+            width: 14px;
+            height: 10px;
+            left: 50%;
+            margin-left: -7px;
+            bottom: -10px;
+            background: url(https://t1.daumcdn.net/localimg/localimages/07/mapjsapi/2x/balloon_arrow.png) no-repeat;
+            background-size: 14px 10px;
+          "></div>
+        </div>
+      `;
+
+      const customOverlay = new kakao.maps.CustomOverlay({
+        position: position,
+        content: content,
+        yAnchor: 1
       });
-      infowindow.open(map, marker);
+      customOverlay.setMap(map);
 
       map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
 

@@ -1,0 +1,81 @@
+.privacy-page-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #fff;
+  color: #334155;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+.privacy-header {
+  border-bottom: 2px solid #1e293b;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.privacy-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+.policy-section {
+  margin-bottom: 35px;
+}
+.policy-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 15px;
+  border-left: 5px solid #3b82f6;
+  padding-left: 15px;
+}
+.policy-index {
+  background: #f8fafc;
+  padding: 25px 40px;
+  border-radius: 10px;
+  margin: 20px 0;
+  font-size: 14px;
+  list-style-type: decimal;
+}
+.policy-index li {
+  margin-bottom: 8px;
+}
+.policy-dates {
+  margin-top: 25px;
+  padding: 20px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  font-weight: 700;
+  text-align: right;
+}
+.policy-dates p {
+  margin: 5px 0;
+}
+.close-btn-wrap {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid #e2e8f0;
+}
+.btn-close {
+  padding: 12px 40px;
+  background: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-close:hover {
+  background: #334155;
+}
+@media (max-width: 640px) {
+  .privacy-page-container {
+    padding: 20px 15px;
+  }
+  .privacy-header h1 {
+    font-size: 22px;
+  }
+}

@@ -924,6 +924,27 @@ h1, h2, h3, h4, .font-display {
   border-color: rgba(255,255,255,0.4);
 }
 
+@media (max-width: 768px) {
+  .cta-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 32px;
+  }
+  .cta-title {
+    font-size: 1.5rem;
+    word-break: keep-all;
+  }
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-cta-primary, .btn-cta-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
 /* --- Footer --- */
 .footer {
   background: #0a0a0a;
@@ -988,6 +1009,24 @@ h1, h2, h3, h4, .font-display {
 .copyright {
   margin-top: 16px;
   color: #475569;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 0;
+  }
+  .footer-top {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+  .footer-info, .footer-info p {
+    text-align: center;
+  }
 }
 
 /* --- Top Button --- */

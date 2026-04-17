@@ -20,7 +20,7 @@ export default async function Page() {
   // 3. Fetch products and group by category
   const products = await prisma.product.findMany({
     include: { category: true },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { order: 'asc' }
   });
   const grouped: Record<string, { name: string; products: any[] }> = {};
   products.forEach((p: any) => {
