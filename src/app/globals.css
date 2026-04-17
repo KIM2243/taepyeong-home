@@ -458,20 +458,30 @@ h1, h2, h3, h4, .font-display {
 .btn-hero-main {
   background: linear-gradient(135deg, var(--primary), #0077a8);
   color: white;
-  padding: 16px 36px;
+  padding: 14px 32px;
   border-radius: 50px;
   font-weight: 700;
   font-size: 0.95rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0,91,130,0.4);
+  box-shadow: 0 4px 16px rgba(0,91,130,0.3);
+  min-width: 220px;
+  width: 220px;
+  white-space: nowrap;
 }
 
 .btn-hero-main:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0,91,130,0.5);
+  box-shadow: 0 6px 24px rgba(0,91,130,0.4);
+}
+
+.btn-inner-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .btn-hero-sub {
@@ -804,6 +814,7 @@ h1, h2, h3, h4, .font-display {
 .location-detail {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px 40px;
 }
 
@@ -898,9 +909,12 @@ h1, h2, h3, h4, .font-display {
   font-weight: 700;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(0,91,130,0.3);
+  width: 220px;
+  min-width: 220px;
   white-space: nowrap;
 }
 

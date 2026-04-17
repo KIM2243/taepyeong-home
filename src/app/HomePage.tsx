@@ -16,6 +16,8 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
   const [configs, setConfigs] = useState<Record<string, string>>(initialConfigs);
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [heroHovered, setHeroHovered] = useState(false);
+  const [ctaHovered, setCtaHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -177,9 +179,36 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                   }} />
                 </div>
                 <div className="hero-actions">
-                  <a href="tel:02-6954-7988" className="btn-hero-main">
-                    전화 문의 <Phone size={18} />
-                  </a>
+                  <motion.a 
+                    href="tel:02-6954-7988" 
+                    className="btn-hero-main"
+                    onMouseEnter={() => setHeroHovered(true)}
+                    onMouseLeave={() => setHeroHovered(false)}
+                  >
+                    <AnimatePresence mode="wait">
+                      {!heroHovered ? (
+                        <motion.span 
+                          key="default"
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="btn-inner-content"
+                        >
+                          <Phone size={18} /> 전화 문의
+                        </motion.span>
+                      ) : (
+                        <motion.span 
+                          key="hover"
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="btn-inner-content"
+                        >
+                          <Phone size={18} /> 02-6954-7988
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.a>
                 </div>
               </div>
             </div>
@@ -310,10 +339,36 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
               <p className="cta-desc">{configs.cta_description || '대량 주문, 납품 상담 등 비즈니스 문의를 환영합니다.'}</p>
             </div>
             <div className="cta-buttons">
-              <a href="tel:02-6954-7988" className="btn-cta-primary">
-                <Phone size={18} />
-                02-6954-7988
-              </a>
+              <motion.a 
+                href="tel:02-6954-7988" 
+                className="btn-cta-primary"
+                onMouseEnter={() => setCtaHovered(true)}
+                onMouseLeave={() => setCtaHovered(false)}
+              >
+                <AnimatePresence mode="wait">
+                  {!ctaHovered ? (
+                    <motion.span 
+                      key="default"
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="btn-inner-content"
+                    >
+                      <Phone size={18} /> 전화 문의
+                    </motion.span>
+                  ) : (
+                    <motion.span 
+                      key="hover"
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="btn-inner-content"
+                    >
+                      <Phone size={18} /> 02-6954-7988
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.a>
               <a href="mailto:365@tpfresh.com" className="btn-cta-secondary">
                 이메일 문의
               </a>
@@ -343,7 +398,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
               >
                 개인정보처리방침
               </a>
-              <Link href="/admin/login">관리자</Link>
+              <Link href="/admin/login" target="_blank" rel="noopener noreferrer">관리자</Link>
             </div>
           </div>
           <div className="footer-divider" />
