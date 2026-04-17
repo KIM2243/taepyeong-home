@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, ShieldCheck, Zap, Truck, ChevronUp, ChevronLeft, ChevronRight, Phone, MessageCircle } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Zap, Truck, ChevronUp, ChevronLeft, ChevronRight, Phone, MessageCircle, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Script from 'next/script';
 import InquiryModal from '@/components/InquiryModal';
 
 export default function HomePage({ initialConfigs = {}, initialSlides = [], initialCategories = [] }: any) {
@@ -14,6 +15,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
   const [categories, setCategories] = useState<any[]>(initialCategories);
   const [configs, setConfigs] = useState<Record<string, string>>(initialConfigs);
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -64,11 +66,39 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
             <a href="#location" className={`nav-link ${headerDark ? 'nav-white' : ''}`}>오시는길</a>
           </nav>
 
-          <button className="btn-header-cta" onClick={() => setInquiryModalOpen(true)}>
-            <MessageCircle size={16} />
-            온라인 문의하기
-          </button>
+          <div className="header-actions">
+            <button className="btn-header-cta desktop-cta" onClick={() => setInquiryModalOpen(true)}>
+              <MessageCircle size={16} />
+              온라인 문의하기
+            </button>
+            <button className={`btn-mobile-menu ${headerDark ? 'text-white' : ''}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
+
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div 
+              className="nav-mobile"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="nav-mobile-inner">
+                <a href="#top" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>회사소개</a>
+                <a href="#products" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>제품소개</a>
+                <a href="#value" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>핵심역량</a>
+                <a href="#location" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>오시는길</a>
+                <button className="btn-mobile-cta" onClick={() => { setInquiryModalOpen(true); setMobileMenuOpen(false); }}>
+                  <MessageCircle size={16} />
+                  온라인 문의하기
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* --- Dynamic Hero Slider --- */}
@@ -430,47 +460,73 @@ function ValueCard({ icon, title, desc, num }: { icon: React.ReactNode, title: s
 function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [errorInfo, setErrorInfo] = useState("");
 
   useEffect(() => {
-    if ((window as any).kakao?.maps) {
+    const initMap = () => {
+      try {
+        (window as any).kakao.maps.load(() => {
+          setMapLoaded(true);
+        });
+      } catch (err) {
+        setErrorInfo("카카오 API 초기화 중 오류가 발생했습니다.");
+      }
+    };
+
+    if ((window as any).kakao?.maps?.Map) {
       setMapLoaded(true);
       return;
     }
 
-    const script = document.createElement('script');
-    script.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=ab92c2392cf2f9d1f29ad4d9f4069d9a&autoload=false';
-    script.async = true;
-    script.onload = () => {
-      (window as any).kakao.maps.load(() => {
-        setMapLoaded(true);
-      });
+    const checkInterval = setInterval(() => {
+      if ((window as any).kakao?.maps) {
+        clearInterval(checkInterval);
+        clearTimeout(timeout);
+        initMap();
+      }
+    }, 100);
+
+    const timeout = setTimeout(() => {
+      clearInterval(checkInterval);
+      setErrorInfo("카카오맵 서버와 연결할 수 없습니다. 일시적인 네트워크 문제일 수 있습니다.");
+    }, 10000);
+
+    return () => {
+      clearInterval(checkInterval);
+      clearTimeout(timeout);
     };
-    document.head.appendChild(script);
   }, []);
 
   useEffect(() => {
     if (!mapLoaded || !mapRef.current) return;
 
-    const kakao = (window as any).kakao;
-    const position = new kakao.maps.LatLng(37.5976, 127.0988);
-    
-    const map = new kakao.maps.Map(mapRef.current, {
-      center: position,
-      level: 3,
-    });
+    try {
+      const kakao = (window as any).kakao;
+      const position = new kakao.maps.LatLng(37.5976, 127.0988);
 
-    const marker = new kakao.maps.Marker({ position, map });
+      mapRef.current.innerHTML = '';
 
-    const infoContent = `
-      <div style="padding:8px 12px;font-size:13px;font-weight:600;white-space:nowrap;">
-        (주)태평프레시
-      </div>
-    `;
-    const infowindow = new kakao.maps.InfoWindow({ content: infoContent });
-    infowindow.open(map, marker);
+      const map = new kakao.maps.Map(mapRef.current, {
+        center: position,
+        level: 3,
+      });
 
-    const zoomControl = new kakao.maps.ZoomControl();
-    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+      const marker = new kakao.maps.Marker({ position, map });
+
+      const infowindow = new kakao.maps.InfoWindow({
+        content: `<div style="padding:8px 12px;font-size:13px;font-weight:600;white-space:nowrap;color:#333;">(주)태평프레시</div>`,
+      });
+      infowindow.open(map, marker);
+
+      map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+
+      const handleResize = () => { map.relayout(); map.setCenter(position); };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    } catch (err) {
+      console.error("Map init error:", err);
+      setErrorInfo("지도 렌더링 중 오류가 발생했습니다.");
+    }
   }, [mapLoaded]);
 
   return (
@@ -478,9 +534,16 @@ function KakaoMap() {
       <div ref={mapRef} className="kakao-map" />
       {!mapLoaded && (
         <div className="map-placeholder">
-          <p>지도를 불러오는 중...</p>
+          {errorInfo ? (
+            <p style={{ color: '#ef4444', textAlign: 'center', padding: '0 20px', lineHeight: '1.6' }}>
+              <strong>지도 연결 실패</strong><br />{errorInfo}
+            </p>
+          ) : (
+            <p>지도를 불러오는 중...</p>
+          )}
         </div>
       )}
     </div>
   );
 }
+

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "태평프레시 | Taepyeong Fresh - 프리미엄 신선 물류의 미래",
@@ -17,6 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <Script 
+          src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ab92c2392cf2f9d1f29ad4d9f4069d9a&autoload=false"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body>
         {children}
       </body>
