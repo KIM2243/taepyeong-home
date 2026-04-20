@@ -41,9 +41,9 @@ export default function SlideManagement() {
       <div className="page-header">
         <div>
           <h1>메인 슬라이드 관리</h1>
-          <p>홈페이지 메인 히어로 섹션에 표시될 슬라이드(최대 4개)를 관리합니다.</p>
+          <p>홈페이지 메인 히어로 섹션에 표시될 슬라이드(최대 3개)를 관리합니다.</p>
         </div>
-        {slides.length < 4 && (
+        {slides.length < 3 && (
           <Link href="/admin/slides/new" className="btn-add">
             <Plus size={20} />
             <span>슬라이드 추가</span>
@@ -78,7 +78,11 @@ export default function SlideManagement() {
                     </div>
                   </td>
                   <td><span className="badge blue-seal">{slide.accent}</span></td>
-                  <td><strong dangerouslySetInnerHTML={{ __html: slide.title }} /></td>
+                  <td>
+                    <div style={{ color: '#0f172a', fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '300px' }}>
+                      {slide.title?.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ')}
+                    </div>
+                  </td>
                   <td className="text-muted">{slide.description}</td>
                   <td>
                     <div className="table-actions">

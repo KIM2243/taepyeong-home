@@ -112,7 +112,7 @@ export default function AdminContentSettings() {
               </div>
               <Link href="/admin/slides/new" className="btn-add" style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
                 <Plus size={16} />
-                <span>슬라이드 추가</span>
+                <span>{slides.length < 3 ? '슬라이드 추가' : '슬라이드(최대 3개)'}</span>
               </Link>
             </div>
             <div className="content-card">
@@ -150,7 +150,11 @@ export default function AdminContentSettings() {
                             </div>
                           </td>
                           <td><span className="badge blue-seal">{slide.accent}</span></td>
-                          <td><div dangerouslySetInnerHTML={{ __html: slide.title }} style={{ fontSize: '0.9rem', fontWeight: 600 }} /></td>
+                          <td>
+                            <div style={{ color: '#0f172a', fontWeight: 600, fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '300px' }}>
+                              {slide.title?.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ')}
+                            </div>
+                          </td>
                           <td>
                             <div className="table-actions">
                               <Link href={`/admin/slides/${slide.id}/edit`} className="btn-icon" title="수정">

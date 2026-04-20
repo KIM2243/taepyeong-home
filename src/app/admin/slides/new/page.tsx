@@ -71,7 +71,7 @@ export default function NewSlide() {
 
           <div className="form-group mb-20">
             <label className="label">메인 제목</label>
-            <div style={{ background: 'white' }}>
+            <div className="hero-editor-container">
               <CustomEditor 
                 variant="dark"
                 value={formData.title}
@@ -79,14 +79,15 @@ export default function NewSlide() {
                 placeholder="제목을 입력하세요."
               />
             </div>
+            <p className="text-muted mt-5" style={{ fontSize: '0.8rem' }}>💡 위 박스 너비(800px)는 실제 사이트의 텍스트 영역과 동일하여 줄바꿈 위치를 미리 확인할 수 있습니다.</p>
           </div>
 
           <div className="form-group mb-20">
             <label className="label">하단 설명문</label>
-            <input 
-              type="text" 
+            <textarea 
               className="input" 
-              placeholder="간략한 설명을 입력하세요." 
+              style={{ minHeight: '100px', padding: '12px', lineHeight: '1.6' }}
+              placeholder="상세 설명을 입력하세요. 엔터(Enter)를 입력하여 줄바꿈을 적용할 수 있습니다." 
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
               required

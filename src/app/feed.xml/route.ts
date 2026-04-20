@@ -30,7 +30,6 @@ export async function GET() {
     <language>ko-kr</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml" />
-    ${items}
   </channel>
 </rss>`;
 

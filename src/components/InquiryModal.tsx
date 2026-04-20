@@ -168,9 +168,9 @@ export default function InquiryModal({ isOpen, onClose }: { isOpen: boolean; onC
                     <th>E-mail <span className="req">*</span></th>
                     <td>
                       <div className="iq-flex-row">
-                        <input type="text" name="emailPrefix" className="iq-input" value={formData.emailPrefix} onChange={handleChange} required />
+                        <input type="text" name="emailPrefix" className="iq-input" placeholder="이메일" value={formData.emailPrefix} onChange={handleChange} required />
                         <span className="iq-separator">@</span>
-                        <input type="text" name="emailDomain" className="iq-input" value={formData.emailDomain} onChange={handleChange} required />
+                        <input type="text" name="emailDomain" className="iq-input" placeholder="도메인" value={formData.emailDomain} onChange={handleChange} required />
                         <select 
                           className="iq-select" 
                           onChange={(e) => setFormData(prev => ({ ...prev, emailDomain: e.target.value }))}
@@ -196,9 +196,9 @@ export default function InquiryModal({ isOpen, onClose }: { isOpen: boolean; onC
                           <option value="051">051</option>
                         </select>
                         <span className="iq-separator">-</span>
-                        <input type="text" name="phone2" className="iq-input-small" maxLength={4} value={formData.phone2} onChange={handleChange} required />
+                        <input type="text" name="phone2" className="iq-input-small" placeholder="1234" maxLength={4} value={formData.phone2} onChange={handleChange} required />
                         <span className="iq-separator">-</span>
-                        <input type="text" name="phone3" className="iq-input-small" maxLength={4} value={formData.phone3} onChange={handleChange} required />
+                        <input type="text" name="phone3" className="iq-input-small" placeholder="5678" maxLength={4} value={formData.phone3} onChange={handleChange} required />
                       </div>
                     </td>
                   </tr>

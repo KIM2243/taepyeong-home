@@ -25,7 +25,6 @@ export async function GET() {
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  ${categoryUrls}
 </urlset>`;
 
   return new Response(sitemap, {

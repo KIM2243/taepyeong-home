@@ -18,8 +18,8 @@ export async function POST(req: Request) {
     
     // Count existing slides
     const count = await prisma.mainSlide.count();
-    if (count >= 4) {
-      return NextResponse.json({ error: "슬라이드는 최대 4개까지만 등록 가능합니다." }, { status: 400 });
+    if (count >= 3) {
+      return NextResponse.json({ error: "슬라이드는 최대 3개까지만 등록 가능합니다." }, { status: 400 });
     }
 
     const slide = await prisma.mainSlide.create({
