@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ShieldCheck, Zap, Truck, ChevronUp, ChevronLeft, ChevronRight, Phone, MessageCircle, Menu, X, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import InquiryModal from '@/components/InquiryModal';
+import ProductDetailModal from '@/components/ProductDetailModal';
 import Link from 'next/link';
 import Script from 'next/script';
 
@@ -15,6 +16,8 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
   const [categories, setCategories] = useState<any[]>(initialCategories);
   const [configs, setConfigs] = useState<Record<string, string>>(initialConfigs);
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [productModalOpen, setProductModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [heroHovered, setHeroHovered] = useState(false);
   const [ctaHovered, setCtaHovered] = useState(false);
@@ -302,7 +305,15 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
 
           {categories.length > 0 ? (
             categories.map((cat) => (
-              <ProductRow key={cat.name} categoryName={cat.name} products={cat.products} />
+              <ProductRow 
+                key={cat.name} 
+                categoryName={cat.name} 
+                products={cat.products} 
+                onProductClick={(p) => {
+                  setSelectedProduct(p);
+                  setProductModalOpen(true);
+                }} 
+              />
             ))
           ) : (
             <div className="empty-product-msg">
@@ -468,6 +479,17 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
       </button>
 
       <InquiryModal isOpen={inquiryModalOpen} onClose={() => setInquiryModalOpen(false)} />
+      
+      <ProductDetailModal 
+        isOpen={productModalOpen} 
+        onClose={() => setProductModalOpen(false)}
+        product={selectedProduct}
+        onInquiry={() => {
+          setProductModalOpen(false);
+          setInquiryModalOpen(true);
+        }}
+        catalogUrl={configs.catalog_url}
+      />
     </div>
   );
 }
@@ -476,7 +498,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
    Sub-Components
    ======================================== */
 
-function ProductRow({ categoryName, products }: { categoryName: string; products: any[] }) {
+function ProductRow({ categoryName, products, onProductClick }: { categoryName: string; products: any[]; onProductClick: (p: any) => void }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -545,7 +567,12 @@ function ProductRow({ categoryName, products }: { categoryName: string; products
 
       <div className="product-scroll-wrap" ref={scrollRef}>
         {products.map((product) => (
-          <div key={product.id} className="product-scroll-card">
+          <div 
+            key={product.id} 
+            className="product-scroll-card"
+            onClick={() => onProductClick(product)}
+            style={{ cursor: 'pointer' }}
+          >
             <div className="psc-img">
               {product.imageUrl ? (
                 <img src={product.imageUrl} alt={product.name} />

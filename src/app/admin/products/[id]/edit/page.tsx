@@ -21,6 +21,11 @@ export default function EditProduct() {
   const [formData, setFormData] = useState({
     name: '',
     spec: '',
+    desc1: '',
+    desc2: '',
+    desc3: '',
+    desc4: '',
+    desc5: '',
     categorySlug: '',
   });
 
@@ -37,6 +42,11 @@ export default function EditProduct() {
         setFormData({
           name: product.name,
           spec: product.spec,
+          desc1: product.desc1 || '',
+          desc2: product.desc2 || '',
+          desc3: product.desc3 || '',
+          desc4: product.desc4 || '',
+          desc5: product.desc5 || '',
           categorySlug: product.category?.slug || '',
         });
         if (product.imageUrl) {
@@ -181,6 +191,21 @@ export default function EditProduct() {
               onChange={(e) => setFormData({ ...formData, spec: e.target.value })}
               required
             />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '20px' }}>
+            <label className="label" style={{ fontWeight: 600, color: '#1e293b' }}>상세 설명 (Bulleted List)</label>
+            <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '-10px', marginBottom: '5px' }}>제품 상세 팝업에 표시될 5가지 특징을 입력하세요.</p>
+            {[1, 2, 3, 4, 5].map(num => (
+              <div key={num} className="input-field">
+                <input 
+                  type="text" 
+                  placeholder={`특징 ${num} 입력`} 
+                  value={(formData as any)[`desc${num}`]}
+                  onChange={(e) => setFormData({...formData, [`desc${num}`]: e.target.value})}
+                />
+              </div>
+            ))}
           </div>
 
           <div className="form-actions">

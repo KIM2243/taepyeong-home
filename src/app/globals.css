@@ -1630,3 +1630,230 @@ h1, h2, h3, h4, .font-display {
 .gap-10 { gap: 10px; }
 .items-center { align-items: center; }
 .inline-block { display: inline-block; }
+
+/* --- Product Detail Modal --- */
+.pd-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.pd-modal-content {
+  background: white;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.pd-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #f1f5f9;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s;
+  color: #64748b;
+}
+
+.pd-modal-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  transform: rotate(90deg);
+}
+
+.pd-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  min-height: 500px;
+}
+
+@media (max-width: 768px) {
+  .pd-modal-body {
+    grid-template-columns: 1fr;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .pd-image-section {
+    height: 300px;
+  }
+}
+
+.pd-image-section {
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  border-right: 1px solid #f1f5f9;
+}
+
+.pd-image-canvas {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.pd-image-canvas img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.pd-no-image {
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.pd-info-section {
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pd-info-header {
+  margin-bottom: 30px;
+}
+
+.pd-product-name {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 15px;
+  letter-spacing: -0.02em;
+}
+
+.pd-divider {
+  width: 60px;
+  height: 4px;
+  background: #00897b;
+  border-radius: 2px;
+}
+
+.pd-description-container {
+  flex-grow: 1;
+}
+
+.pd-desc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pd-desc-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f8fafc;
+}
+
+.pd-desc-list li:last-child {
+  border-bottom: none;
+}
+
+.pd-desc-list .dot {
+  width: 6px;
+  height: 6px;
+  background: #00897b;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+
+.pd-desc-list p {
+  margin: 0;
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.pd-actions {
+  margin-top: 40px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn-pd-inquiry {
+  background: #00897b;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 137, 123, 0.2);
+}
+
+.btn-pd-inquiry:hover {
+  background: #00796b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 137, 123, 0.3);
+}
+
+.btn-pd-catalog {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn-pd-catalog:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.btn-secondary.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Custom animate-spin for Upload */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}

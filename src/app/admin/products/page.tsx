@@ -2,19 +2,62 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Plus, Trash2, Edit2, ExternalLink, GripVertical, Save } from 'lucide-react';
+import { Plus, Trash2, Edit2, ExternalLink, GripVertical, Save, FileText, Upload, Check } from 'lucide-react';
 
 export default function ProductList() {
   const [products, setProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDirty, setIsDirty] = useState(false);   // 순서 변경됐는지 여부
   const [isSaving, setIsSaving] = useState(false);
+  const [isCatalogUploading, setIsCatalogUploading] = useState(false);
+  const [catalogUrl, setCatalogUrl] = useState('');
 
   // 드래그 상태
   const dragIndex = useRef<number | null>(null);
   const dragOverIndex = useRef<number | null>(null);
 
-  useEffect(() => { fetchProducts(); }, []);
+  useEffect(() => { 
+    fetchProducts(); 
+    fetchCatalog();
+  }, []);
+
+  const fetchCatalog = async () => {
+    try {
+      const res = await fetch('/api/admin/settings');
+      const settings = await res.json();
+      if (settings.catalog_url) setCatalogUrl(settings.catalog_url);
+    } catch (err) {
+      console.error('Failed to fetch catalog');
+    }
+  };
+
+  const handleCatalogUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsCatalogUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const uploadRes = await fetch('/api/admin/upload', { method: 'POST', body: fd });
+      if (!uploadRes.ok) throw new Error('업로드 실패');
+      const { url } = await uploadRes.json();
+
+      const saveRes = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ catalog_url: url })
+      });
+      if (!saveRes.ok) throw new Error('설정 저장 실패');
+
+      setCatalogUrl(url);
+      alert('카달로그가 성공적으로 업로드되었습니다.');
+    } catch (err: any) {
+      alert(`오류 발생: ${err.message}`);
+    } finally {
+      setIsCatalogUploading(false);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -101,10 +144,17 @@ export default function ProductList() {
               <span>{isSaving ? '저장 중...' : '순서 저장'}</span>
             </button>
           )}
-          <Link href="/admin/products/new" className="btn-add">
-            <Plus size={20} />
-            <span>제품 추가</span>
-          </Link>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <label className={`btn-secondary ${isCatalogUploading ? 'loading' : ''}`} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', height: '42px', padding: '0 15px', borderRadius: '8px', background: '#f1f5f9', color: '#475569', fontSize: '0.85rem', fontWeight: 600 }}>
+              {isCatalogUploading ? <Upload size={18} className="animate-spin" /> : (catalogUrl ? <Check size={18} color="#10b981" /> : <FileText size={18} />)}
+              <span>{isCatalogUploading ? '업로드 중...' : (catalogUrl ? '카달로그 변경' : '카달로그 업로드')}</span>
+              <input type="file" onChange={handleCatalogUpload} hidden accept=".pdf" />
+            </label>
+            <Link href="/admin/products/new" className="btn-add">
+              <Plus size={20} />
+              <span>제품 추가</span>
+            </Link>
+          </div>
         </div>
       </div>
 

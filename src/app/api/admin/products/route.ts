@@ -39,6 +39,11 @@ export async function POST(req: Request) {
       data: {
         name: data.name,
         spec: data.spec || '',
+        desc1: data.desc1 || '',
+        desc2: data.desc2 || '',
+        desc3: data.desc3 || '',
+        desc4: data.desc4 || '',
+        desc5: data.desc5 || '',
         imageUrl: data.imageUrl || null,
         categoryId: categoryId,
         order: data.order || 0

@@ -35,6 +35,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       data: {
         name: data.name,
         spec: data.spec || '',
+        desc1: data.desc1 !== undefined ? data.desc1 : undefined,
+        desc2: data.desc2 !== undefined ? data.desc2 : undefined,
+        desc3: data.desc3 !== undefined ? data.desc3 : undefined,
+        desc4: data.desc4 !== undefined ? data.desc4 : undefined,
+        desc5: data.desc5 !== undefined ? data.desc5 : undefined,
         ...(data.imageUrl !== undefined && { imageUrl: data.imageUrl }),
         ...(categoryId && { categoryId }),
       }
