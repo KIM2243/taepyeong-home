@@ -142,7 +142,11 @@ export default function AdminContentSettings() {
                           <td style={{ textAlign: 'center' }}>{index + 1}</td>
                           <td>
                             <div className="table-img-box" style={{ width: '80px', height: '45px' }}>
-                              <img src={slide.imageUrl} alt={slide.title} />
+                              {slide.imageUrl ? (
+                                <img src={slide.imageUrl} alt={slide.title?.replace(/<[^>]*>?/gm, '')} />
+                              ) : (
+                                <span className="no-img">NO IMAGE</span>
+                              )}
                             </div>
                           </td>
                           <td><span className="badge blue-seal">{slide.accent}</span></td>

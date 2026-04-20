@@ -555,19 +555,19 @@ h1, h2, h3, h4, .font-display {
 .btn-hero-main {
   background: linear-gradient(135deg, var(--primary), #0077a8);
   color: white;
-  padding: 14px 24px;
+  padding: 14px 28px;
   border-radius: 50px;
   font-weight: 700;
   font-size: 0.95rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(0,91,130,0.3);
-  min-width: 190px;
-  width: 190px;
+  min-width: 160px;
+  width: auto;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .btn-hero-main:hover {
@@ -578,17 +578,24 @@ h1, h2, h3, h4, .font-display {
 .btn-inner-content {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  line-height: 1;
 }
 
 .btn-hero-sub {
   color: rgba(255,255,255,0.7);
-  padding: 16px 28px;
+  padding: 14px 28px;
   border-radius: 50px;
   font-weight: 600;
   font-size: 0.95rem;
   border: 1px solid rgba(255,255,255,0.2);
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  line-height: 1;
 }
 
 .btn-hero-sub:hover {
@@ -1001,18 +1008,18 @@ h1, h2, h3, h4, .font-display {
 .btn-cta-primary {
   background: linear-gradient(135deg, var(--primary), #0077a8);
   color: white;
-  padding: 14px 24px;
+  padding: 12px 28px;
   border-radius: 50px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(0,91,130,0.3);
-  width: 190px;
-  min-width: 190px;
+  width: auto;
+  min-width: 164px;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .btn-cta-primary:hover {
@@ -1022,12 +1029,17 @@ h1, h2, h3, h4, .font-display {
 
 .btn-cta-secondary {
   color: #94a3b8;
-  padding: 14px 28px;
+  padding: 12px 28px;
   border-radius: 50px;
   font-weight: 600;
   border: 1px solid rgba(255,255,255,0.15);
   transition: all 0.3s ease;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 164px;
+  line-height: 1;
 }
 
 .btn-cta-secondary:hover {

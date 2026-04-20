@@ -58,18 +58,18 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      <div className="max-w-2xl" style={{ marginTop: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', paddingLeft: '4px' }}>
+      <div className="max-w-3xl" style={{ marginTop: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', paddingLeft: '4px' }}>
           <Lock color="#475569" size={20} />
-          <h3 style={{ fontWeight: 700, color: '#1e293b', fontSize: '1.25rem', margin: 0 }}>비밀번호 변경</h3>
+          <h3 style={{ fontWeight: 700, color: '#1e293b', fontSize: '1.15rem', margin: 0 }}>비밀번호 변경</h3>
         </div>
         
-        <div className="content-card p-10 md:p-40">
-          <div className="settings-section">
-
-            <form onSubmit={handleChangePassword} className="admin-form settings-form space-y-6">
-              <div className="input-field">
-                <label>현재 비밀번호</label>
+        <div className="content-card p-30">
+          <form onSubmit={handleChangePassword} className="admin-form">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '800px' }}>
+              
+              <div className="form-group" style={{ maxWidth: '400px' }}>
+                <label className="label">현재 비밀번호</label>
                 <input 
                   type="password" 
                   placeholder="현재 주 비밀번호 입력"
@@ -80,9 +80,9 @@ export default function AdminSettings() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="input-field">
-                  <label>새 비밀번호</label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+                <div className="form-group">
+                  <label className="label">새 비밀번호</label>
                   <input 
                     type="password" 
                     placeholder="새로운 비밀번호"
@@ -92,8 +92,8 @@ export default function AdminSettings() {
                     required
                   />
                 </div>
-                <div className="input-field">
-                  <label>새 비밀번호 확인</label>
+                <div className="form-group">
+                  <label className="label">새 비밀번호 확인</label>
                   <input 
                     type="password" 
                     placeholder="비밀번호 재입력"
@@ -112,14 +112,14 @@ export default function AdminSettings() {
                 </div>
               )}
 
-              <div className="form-actions border-t border-border/50 pt-5 mt-2">
-                <button type="submit" className="btn-submit w-full justify-center md:w-auto" disabled={isLoading}>
+              <div className="form-actions" style={{ marginTop: '10px', borderTop: '1px solid #e2e8f0', paddingTop: '24px' }}>
+                <button type="submit" className="btn-primary" disabled={isLoading} style={{ minWidth: '160px' }}>
                   <Save size={18} />
                   <span>{isLoading ? '변경 중...' : '보안 설정 저장'}</span>
                 </button>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

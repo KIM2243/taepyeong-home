@@ -70,11 +70,15 @@ export default function SlideManagement() {
                   <td>{index + 1}</td>
                   <td>
                     <div className="table-img-box">
-                      <img src={slide.imageUrl} alt={slide.title} />
+                      {slide.imageUrl ? (
+                        <img src={slide.imageUrl} alt={slide.title?.replace(/<[^>]*>?/gm, '')} />
+                      ) : (
+                        <span className="no-img">NO IMAGE</span>
+                      )}
                     </div>
                   </td>
                   <td><span className="badge blue-seal">{slide.accent}</span></td>
-                  <td><strong>{slide.title}</strong></td>
+                  <td><strong dangerouslySetInnerHTML={{ __html: slide.title }} /></td>
                   <td className="text-muted">{slide.description}</td>
                   <td>
                     <div className="table-actions">

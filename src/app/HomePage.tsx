@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, ShieldCheck, Zap, Truck, ChevronUp, ChevronLeft, ChevronRight, Phone, MessageCircle, Menu, X } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Zap, Truck, ChevronUp, ChevronLeft, ChevronRight, Phone, MessageCircle, Menu, X, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import InquiryModal from '@/components/InquiryModal';
 import Link from 'next/link';
@@ -196,7 +196,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                     onClick={() => setInquiryModalOpen(true)}
                     className="btn-hero-sub"
                   >
-                    <MessageCircle size={18} /> 이메일 문의
+                    <span className="btn-inner-content">
+                      <MessageCircle size={18} /> 온라인 문의
+                    </span>
                   </motion.button>
                 </motion.div>
               </div>
@@ -250,7 +252,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                     onClick={() => setInquiryModalOpen(true)}
                     className="btn-hero-sub"
                   >
-                    <MessageCircle size={18} /> 이메일 문의
+                    <span className="btn-inner-content">
+                      <MessageCircle size={18} /> 온라인 문의
+                    </span>
                   </motion.button>
                 </div>
               </div>
@@ -413,7 +417,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                 </AnimatePresence>
               </motion.a>
               <a href="mailto:365@tpfresh.com" className="btn-cta-secondary">
-                이메일 문의
+                <span className="btn-inner-content">
+                  <Mail size={18} /> 이메일 문의
+                </span>
               </a>
             </div>
           </div>
