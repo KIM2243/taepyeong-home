@@ -4,16 +4,8 @@ import { prisma } from '@/lib/prisma';
 export async function POST(req: Request) {
   const { id, password } = await req.json();
 
-  // MASTER & DEFAULT FALLBACK (Highest Priority: Ensures access even if DB tables are missing)
-  if (id === "admin" && (password === "1212" || password === "rlawhddbs132!")) {
-    const resp = NextResponse.json({ success: true, message: "Logged in via default credentials" });
-    resp.cookies.set('admin_session', 'true', { 
-      path: '/', 
-      httpOnly: false, // Changed to false to allow client-side Auth check in AdminLayout
-      maxAge: 60 * 60 * 24
-    });
-    return resp;
-  }
+  // Removed hardcoded master/fallback password check for security.
+  // Now exclusively uses the Prisma database for authentication.
 
   try {
     const admin = await prisma.admin.findUnique({

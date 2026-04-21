@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     siteName: "태평프레시",
     images: [
       {
-        url: "/logo.png",
+        url: "https://www.tpfresh.com/logo.png",
         width: 800,
         height: 600,
         alt: "태평프레시 로고",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "(주)태평프레시 - B2B 화장지 전문 유통",
     description: "합리적인 가격과 믿을 수 있는 화장지 제품 일체를 공급합니다.",
-    images: ["/logo.png"],
+    images: ["https://www.tpfresh.com/logo.png"],
   },
   verification: {
     other: {

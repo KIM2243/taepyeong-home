@@ -29,12 +29,12 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
   }, []);
 
   useEffect(() => {
-    if (slides.length <= 1) return;
+    if (slides.length <= 1 || heroHovered) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [slides.length, currentSlide]);
+  }, [slides.length, currentSlide, heroHovered]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
