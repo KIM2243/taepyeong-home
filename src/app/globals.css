@@ -1428,14 +1428,18 @@ h1, h2, h3, h4, .font-display {
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 10px 0 30px rgba(0,0,0,0.1);
   }
-  .admin-sidebar.open {
-    left: 0;
+  .admin-shell {
+    overflow-x: hidden;
+    max-width: 100vw;
   }
   .admin-body {
     margin-left: 0;
+    min-width: 0; /* Essential flexbox fix for horizontal scroll */
+    width: 100%;
   }
   .admin-topbar {
     padding: 0 16px;
+    width: 100%;
   }
   .mobile-toggle-btn {
     display: flex;
@@ -1454,16 +1458,23 @@ h1, h2, h3, h4, .font-display {
     animation: fadeIn 0.2s ease;
   }
   .topbar-user .user-role { display: none; }
-  .admin-page-wrap { padding: 20px 16px; }
+  .admin-page-wrap { 
+    padding: 20px 16px; 
+    width: 100%;
+    overflow-x: hidden; /* Prevent page-level scroll, allow container-level scroll */
+  }
 
   /* Table responsiveness improvements */
   .table-responsive {
+    width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 10px;
+    border-radius: 8px;
   }
   .admin-table {
-    min-width: 800px;
+    min-width: 800px; /* Force minimum width to enable scroll */
+    border-collapse: collapse;
   }
   .admin-table th, .admin-table td {
     padding: 12px 10px;
