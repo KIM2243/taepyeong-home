@@ -1445,10 +1445,20 @@ h1, h2, h3, h4, .font-display {
     padding: 0 16px;
     width: 100%;
   }
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .topbar-title {
+    font-size: 1rem;
+    white-space: nowrap;
+  }
   .mobile-toggle-btn {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 0;
   }
   .mobile-close-btn {
     display: flex;
@@ -1506,6 +1516,15 @@ h1, h2, h3, h4, .font-display {
   }
   .badge {
     white-space: nowrap;
+  }
+
+  /* Force horizontal scroll on form containers if needed */
+  .admin-form {
+    min-width: 600px;
+  }
+  .content-card .admin-form {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
