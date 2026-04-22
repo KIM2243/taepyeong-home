@@ -12,7 +12,9 @@ import {
   Layout,
   Layers,
   Bell,
-  MessageCircle
+  MessageCircle,
+  Menu,
+  X
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -30,6 +32,7 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [logoErr, setLogoErr] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   React.useEffect(() => {
     const isAuthenticated = document.cookie.includes('admin_session=true');
@@ -38,19 +41,34 @@ export default function AdminLayout({
     }
   }, [pathname, router]);
 
+  // Close sidebar on navigation (mobile)
+  React.useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [pathname]);
+
   if (pathname === '/admin/login') return <>{children}</>;
 
   const pageTitle = NAV_ITEMS.find(n => pathname.includes(n.match))?.label || '대시보드';
 
   return (
     <div className="admin-shell">
-      <aside className="admin-sidebar">
+      {/* Sidebar Backdrop (Mobile) */}
+      {isSidebarOpen && (
+        <div className="sidebar-backdrop" onClick={() => setIsSidebarOpen(false)} />
+      )}
+
+      <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-brand">
-          {!logoErr ? (
-            <img src="/logo.png" alt="TP" className="sidebar-logo" onError={() => setLogoErr(true)} />
-          ) : (
-            <div className="sidebar-logo-text">TP</div>
-          )}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '16px' }}>
+            {!logoErr ? (
+              <img src="/logo.png" alt="TP" className="sidebar-logo" onError={() => setLogoErr(true)} />
+            ) : (
+              <div className="sidebar-logo-text">TP</div>
+            )}
+            <button className="mobile-close-btn" onClick={() => setIsSidebarOpen(false)}>
+              <X size={20} />
+            </button>
+          </div>
           <div className="sidebar-brand-info">
             <span className="brand-name">태평프레시</span>
             <span className="brand-role">Admin Console</span>
@@ -81,18 +99,23 @@ export default function AdminLayout({
 
       <main className="admin-body">
         <header className="admin-topbar">
-          <div className="topbar-left">
-            <h2 className="topbar-title">{pageTitle}</h2>
-          </div>
-          <div className="topbar-right">
-            <button className="topbar-icon-btn">
-              <Bell size={18} />
-            </button>
-            <div className="topbar-user">
-              <div className="user-avatar">A</div>
-              <div className="user-info">
-                <span className="user-name">관리자</span>
-                <span className="user-role">Administrator</span>
+          <div className="topbar-inner">
+            <div className="topbar-left">
+              <button className="mobile-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+                <Menu size={24} />
+              </button>
+              <h2 className="topbar-title">{pageTitle}</h2>
+            </div>
+            <div className="topbar-right">
+              <button className="topbar-icon-btn">
+                <Bell size={18} />
+              </button>
+              <div className="topbar-user">
+                <div className="user-avatar">A</div>
+                <div className="user-info">
+                  <span className="user-name">관리자</span>
+                  <span className="user-role">Administrator</span>
+                </div>
               </div>
             </div>
           </div>

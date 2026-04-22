@@ -183,7 +183,7 @@ export default function AdminContentSettings() {
             <div className="content-card p-30">
               <div className="admin-form">
                 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', maxWidth: '800px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
                   <div className="form-group">
                     <label className="label">섹션 태그명</label>
                     <input type="text" value={config.value_tag || ''} onChange={e => handleConfigChange('value_tag', e.target.value)} placeholder="Why Taepyeong Fresh" className="input" />
@@ -194,7 +194,7 @@ export default function AdminContentSettings() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '800px', marginTop: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '12px' }}>
                 {[1, 2, 3].map(num => (
                   <div key={num} style={{ background: '#f8fafc', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
                     <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#64748b', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -227,7 +227,7 @@ export default function AdminContentSettings() {
               <h3 style={{ fontWeight: 700, color: '#1e293b', fontSize: '1.15rem', margin: 0 }}>하단 컨택트 (CTA) 섹션</h3>
             </div>
             <div className="content-card p-30">
-              <div className="admin-form" style={{ maxWidth: '800px' }}>
+              <div className="admin-form">
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
                   <div className="form-group">
                     <label className="label">섹션 태그명</label>

@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import { X, Download, MessageCircle, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Download, MessageCircle, Phone, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Product {
@@ -25,6 +25,8 @@ interface ProductDetailModalProps {
 }
 
 export default function ProductDetailModal({ isOpen, onClose, product, onInquiry, catalogUrl }: ProductDetailModalProps) {
+  const [isPhoneHovered, setIsPhoneHovered] = useState(false);
+  
   if (!isOpen || !product) return null;
 
   const descriptions = [
@@ -86,15 +88,46 @@ export default function ProductDetailModal({ isOpen, onClose, product, onInquiry
             </div>
 
             <div className="pd-actions">
+              <motion.a 
+                href="tel:02-6954-7988"
+                className="btn-pd-call"
+                onMouseEnter={() => setIsPhoneHovered(true)}
+                onMouseLeave={() => setIsPhoneHovered(false)}
+              >
+                <AnimatePresence mode="wait">
+                  {!isPhoneHovered ? (
+                    <motion.span 
+                      key="default"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="btn-inner-content"
+                    >
+                      <Phone size={18} /> 전화 문의
+                    </motion.span>
+                  ) : (
+                    <motion.span 
+                      key="hover"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="btn-inner-content"
+                    >
+                      <Phone size={18} /> 02-6954-7988
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.a>
+
               <button className="btn-pd-inquiry" onClick={onInquiry}>
                 <MessageCircle size={18} />
-                <span>제품 문의하기</span>
+                <span>온라인 문의</span>
               </button>
               
               {catalogUrl && (
                 <a href={catalogUrl} target="_blank" rel="noopener noreferrer" className="btn-pd-catalog">
                   <Download size={18} />
-                  <span>카달로그 받기</span>
+                  <span>카달로그</span>
                 </a>
               )}
             </div>

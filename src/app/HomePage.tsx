@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, ShieldCheck, Zap, Truck, ChevronUp, ChevronLeft, ChevronRight, Phone, MessageCircle, Menu, X, Mail } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Zap, Truck, ChevronUp, ChevronLeft, ChevronRight, Phone, MessageCircle, Menu, X, Mail, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import InquiryModal from '@/components/InquiryModal';
 import ProductDetailModal from '@/components/ProductDetailModal';
@@ -175,9 +175,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                       {!heroHovered ? (
                         <motion.span 
                           key="default"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
                           className="btn-inner-content"
                         >
                           <Phone size={18} /> 전화 문의
@@ -185,9 +185,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                       ) : (
                         <motion.span 
                           key="hover"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
                           className="btn-inner-content"
                         >
                           <Phone size={18} /> 02-6954-7988
@@ -203,6 +203,18 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                       <MessageCircle size={18} /> 온라인 문의
                     </span>
                   </motion.button>
+                  {configs.catalog_url && (
+                    <motion.a 
+                      href={configs.catalog_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-hero-sub"
+                    >
+                      <span className="btn-inner-content">
+                        <Download size={18} /> 카달로그
+                      </span>
+                    </motion.a>
+                  )}
                 </motion.div>
               </div>
             </motion.div>
@@ -231,9 +243,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                       {!heroHovered ? (
                         <motion.span 
                           key="default"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
                           className="btn-inner-content"
                         >
                           <Phone size={18} /> 전화 문의
@@ -241,9 +253,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                       ) : (
                         <motion.span 
                           key="hover"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
                           className="btn-inner-content"
                         >
                           <Phone size={18} /> 02-6954-7988
@@ -259,6 +271,18 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                       <MessageCircle size={18} /> 온라인 문의
                     </span>
                   </motion.button>
+                  {configs.catalog_url && (
+                    <motion.a 
+                      href={configs.catalog_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-hero-sub"
+                    >
+                      <span className="btn-inner-content">
+                        <Download size={18} /> 카달로그
+                      </span>
+                    </motion.a>
+                  )}
                 </div>
               </div>
             </div>
@@ -407,9 +431,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                   {!ctaHovered ? (
                     <motion.span 
                       key="default"
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -5 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       className="btn-inner-content"
                     >
                       <Phone size={18} /> 전화 문의
@@ -417,9 +441,9 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
                   ) : (
                     <motion.span 
                       key="hover"
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -5 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
                       className="btn-inner-content"
                     >
                       <Phone size={18} /> 02-6954-7988
