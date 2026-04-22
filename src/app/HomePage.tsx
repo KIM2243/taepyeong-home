@@ -487,8 +487,23 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
           </div>
           <div className="footer-divider" />
           <div className="footer-info">
-            <p>상호 : (주)태평프레시 / 사업자등록번호 : 865-86-03320 / 대표 : 김종윤 / 주소 : 서울특별시 중랑구 용마산로 419, 4층 401호</p>
-            <p>TEL : 02)6954-7988 / FAX : 02)6958-7987 / Email : 365@tpfresh.com</p>
+            <div className="info-row">
+              <span className="info-item">상호 : (주)태평프레시</span>
+              <span className="info-sep">/</span>
+              <span className="info-item">사업자등록번호 : 865-86-03320</span>
+              <span className="info-sep">/</span>
+              <span className="info-item">대표 : 김종윤</span>
+            </div>
+            <div className="info-row">
+              <span className="info-item">주소 : 서울특별시 중랑구 용마산로 419, 4층 401호</span>
+            </div>
+            <div className="info-row">
+              <span className="info-item">TEL : 02)6954-7988</span>
+              <span className="info-sep">/</span>
+              <span className="info-item">FAX : 02)6958-7987</span>
+              <span className="info-sep">/</span>
+              <span className="info-item">Email : 365@tpfresh.com</span>
+            </div>
             <p className="copyright">© 2026 Taepyeong Fresh. All rights reserved.</p>
           </div>
         </div>

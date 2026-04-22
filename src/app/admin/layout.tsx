@@ -14,7 +14,8 @@ import {
   Bell,
   MessageCircle,
   Menu,
-  X
+  X,
+  Globe
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -90,6 +91,10 @@ export default function AdminLayout({
         </nav>
 
         <div className="sidebar-bottom">
+          <Link href="/" className="sidebar-link" target="_blank">
+            <Globe size={18} />
+            <span>메인페이지 이동</span>
+          </Link>
           <button onClick={() => { document.cookie = 'admin_session=; Max-Age=0; path=/'; router.push('/admin/login'); }} className="sidebar-link logout-link">
             <LogOut size={18} />
             <span>로그아웃</span>

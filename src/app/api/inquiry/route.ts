@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { sendInquiryNotification } from '@/lib/mailer';
 
 export async function POST(req: Request) {
   try {
@@ -22,6 +23,24 @@ export async function POST(req: Request) {
         status: 'UNREAD'
       }
     });
+
+    // Handle Email Notification in the background
+    (async () => {
+      try {
+        const emailSetting = await prisma.siteSetting.findUnique({
+          where: { key: 'notification_emails' }
+        });
+        
+        if (emailSetting && emailSetting.value) {
+          const emails: string[] = JSON.parse(emailSetting.value);
+          if (Array.isArray(emails) && emails.length > 0) {
+            await sendInquiryNotification(emails, inquiry);
+          }
+        }
+      } catch (err) {
+        console.error('[MAILER] Background notification failed:', err);
+      }
+    })();
 
     return NextResponse.json(inquiry, { status: 201 });
   } catch (error: any) {
