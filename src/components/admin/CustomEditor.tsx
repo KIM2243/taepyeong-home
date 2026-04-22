@@ -34,6 +34,7 @@ interface CustomEditorProps {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  variant?: 'light' | 'dark';
 }
 
 const QUILL_COLORS = [
