@@ -37,7 +37,9 @@ export default function AdminLayout({
 
   React.useEffect(() => {
     const isAuthenticated = document.cookie.includes('admin_session=true');
-    if (!isAuthenticated && pathname !== '/admin/login') {
+    const isPublicPage = pathname === '/admin/login' || pathname === '/admin/forgot-password';
+    
+    if (!isAuthenticated && !isPublicPage) {
       router.push('/admin/login');
     }
   }, [pathname, router]);
@@ -47,7 +49,7 @@ export default function AdminLayout({
     setIsSidebarOpen(false);
   }, [pathname]);
 
-  if (pathname === '/admin/login') return <>{children}</>;
+  if (pathname === '/admin/login' || pathname === '/admin/forgot-password') return <>{children}</>;
 
   const pageTitle = NAV_ITEMS.find(n => pathname.includes(n.match))?.label || '대시보드';
 

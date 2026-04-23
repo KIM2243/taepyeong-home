@@ -24,25 +24,29 @@ export async function POST(req: Request) {
       }
     });
 
-    // Handle Email Notification in the background
-    (async () => {
-      try {
-        const emailSetting = await prisma.siteSetting.findUnique({
-          where: { key: 'notification_emails' }
-        });
-        
-        if (emailSetting && emailSetting.value) {
-          const emails: string[] = JSON.parse(emailSetting.value);
-          if (Array.isArray(emails) && emails.length > 0) {
-            await sendInquiryNotification(emails, inquiry);
-          }
+    // Handle Email Notification
+    try {
+      const emailSetting = await prisma.siteSetting.findUnique({
+        where: { key: 'notification_emails' }
+      });
+      
+      if (emailSetting && emailSetting.value) {
+        const emails: string[] = JSON.parse(emailSetting.value);
+        if (Array.isArray(emails) && emails.length > 0) {
+          // In Serverless environments like Vercel, we MUST await the email sending
+          // or the function might terminate before it is sent.
+          await sendInquiryNotification(emails, inquiry);
         }
-      } catch (err) {
-        console.error('[MAILER] Background notification failed:', err);
       }
-    })();
+    } catch (err) {
+      console.error('[MAILER] Notification failed:', err);
+      // We don't return error to user here because the inquiry is already saved to DB
+    }
 
-    return NextResponse.json(inquiry, { status: 201 });
+    return NextResponse.json({ 
+      success: true, 
+      data: inquiry 
+    });
   } catch (error: any) {
     console.error('Failed to submit inquiry:', error);
     return NextResponse.json({ error: 'Failed to submit inquiry', details: error?.message || String(error) }, { status: 500 });

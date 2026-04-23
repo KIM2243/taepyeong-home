@@ -8,27 +8,29 @@ interface InquiryData {
   details: string;
 }
 
+const createTransporter = () => {
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
+  
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+    throw new Error('SMTP credentials missing in .env');
+  }
+
+  return nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: Number(SMTP_PORT) || 465,
+    secure: Number(SMTP_PORT) === 465,
+    auth: {
+      user: SMTP_USER,
+      pass: SMTP_PASS,
+    },
+  });
+};
+
 export async function sendInquiryNotification(toEmails: string[], inquiryData: InquiryData) {
   if (!toEmails || toEmails.length === 0) return;
 
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-
-  // If SMTP is not properly configured, just log to the console gracefully.
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    console.warn('[MAILER] SMTP credentials missing in .env. Skipping email notification to:', toEmails.join(', '));
-    return;
-  }
-
   try {
-    const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: Number(SMTP_PORT) || 465,
-      secure: Number(SMTP_PORT) === 465, // true for 465, false for other ports
-      auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS,
-      },
-    });
+    const transporter = createTransporter();
 
     const htmlBody = `
       <div style="font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
@@ -65,15 +67,57 @@ export async function sendInquiryNotification(toEmails: string[], inquiryData: I
       </div>
     `;
 
-    const info = await transporter.sendMail({
-      from: `"태평프레시 시스템" <${SMTP_USER}>`, // sender address
-      to: toEmails.join(', '), // list of receivers
-      subject: `[태평프레시] ${inquiryData.name}님으로부터 새로운 문의가 접수되었습니다.`, // Subject line
-      html: htmlBody, // html body
+    await transporter.sendMail({
+      from: `"태평프레시 시스템" <${process.env.SMTP_USER}>`,
+      to: toEmails.join(', '),
+      subject: `[태평프레시] ${inquiryData.name}님으로부터 새로운 문의가 접수되었습니다.`,
+      html: htmlBody,
     });
 
-    console.log('[MAILER] Message sent successfully: %s', info.messageId);
+    console.log('[MAILER] Inquiry notification sent successfully');
   } catch (error) {
-    console.error('[MAILER] Error sending email:', error);
+    console.error('[MAILER] Failed to send inquiry notification:', error);
+    throw error;
+  }
+}
+
+/**
+ * Sends a temporary password to the admin's recovery email.
+ */
+export async function sendPasswordResetEmail(to: string, tempPassword: string) {
+  const mailOptions = {
+    from: `"태평프레시 시스템" <${process.env.SMTP_USER}>`,
+    to,
+    subject: '[태평프레시] 관리자 계정 임시 비밀번호 안내',
+    html: `
+      <div style="font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; border: 1px solid #e2e8f0; border-radius: 12px;">
+        <h2 style="color: #005B82; margin-top: 0;">임시 비밀번호가 발급되었습니다.</h2>
+        <p style="color: #475569; line-height: 1.6;">본 메일은 관리자 계정 분실로 인한 비밀번호 재설정 요청에 따라 발송되었습니다.</p>
+        
+        <div style="background: #f8fafc; padding: 24px; border-radius: 8px; margin: 30px 0; text-align: center;">
+          <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: #64748b;">임시 비밀번호</p>
+          <p style="margin: 0; font-size: 1.5rem; font-weight: 700; color: #1e293b; letter-spacing: 2px;">${tempPassword}</p>
+        </div>
+        
+        <div style="background: #fff4f4; padding: 16px; border-radius: 8px; border-left: 4px solid #ef4444; margin-bottom: 30px;">
+          <p style="margin: 0; color: #991b1b; font-size: 0.9rem;">
+            <strong>주의:</strong> 보안을 위해 로그인 후 반드시 비밀번호를 바로 변경해 주세요.
+          </p>
+        </div>
+
+        <p style="color: #64748b; font-size: 0.85rem; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+          본 메일은 발신 전용입니다. 문의사항은 관리자에게 직접 연락 바랍니다.
+        </p>
+      </div>
+    `,
+  };
+
+  try {
+    const transporter = createTransporter();
+    await transporter.sendMail(mailOptions);
+    console.log('[MAILER] Password reset email sent successfully');
+  } catch (error) {
+    console.error('[MAILER] Failed to send password reset email:', error);
+    throw error;
   }
 }

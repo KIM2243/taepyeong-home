@@ -1197,6 +1197,7 @@ h1, h2, h3, h4, .font-display {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  align-items: flex-start;
 }
 
 .info-row {
@@ -1223,6 +1224,7 @@ h1, h2, h3, h4, .font-display {
   margin-top: 16px;
   color: #475569;
   font-size: 0.85rem;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
@@ -1240,6 +1242,7 @@ h1, h2, h3, h4, .font-display {
   }
   .footer-info {
     align-items: center;
+    text-align: center;
   }
   .info-row {
     flex-direction: column;
@@ -1732,6 +1735,18 @@ h1, h2, h3, h4, .font-display {
 .message-banner { padding: 14px 16px; border-radius: 10px; display: flex; align-items: center; gap: 10px; font-size: 0.88rem; font-weight: 500; }
 .message-banner.success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
 .message-banner.error { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+
+/* Auto-hide animation */
+@keyframes fade-out-banner {
+  0% { opacity: 0; transform: translateY(-5px); }
+  10% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-5px); }
+}
+
+.message-banner.animate-hide {
+  animation: fade-out-banner 3.5s forwards;
+}
 
 /* Image uploader */
 .image-upload-zone { border: 2px dashed #cbd5e1; border-radius: 14px; background: #f8fafc; transition: all 0.2s ease; overflow: hidden; }

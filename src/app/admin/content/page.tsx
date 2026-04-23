@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Save, AlertCircle, LayoutTemplate, MessageSquare, Info, Plus, Trash2, Edit2, ArrowUpDown } from 'lucide-react';
+import { Save, AlertCircle, LayoutTemplate, MessageSquare, Info, Plus, Trash2, Edit2, ArrowUpDown, FileText, Download, Upload } from 'lucide-react';
 import CustomEditor from '@/components/admin/CustomEditor';
 
 export default function AdminContentSettings() {
@@ -11,6 +11,8 @@ export default function AdminContentSettings() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSlidesLoading, setIsSlidesLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchConfig();
@@ -78,6 +80,36 @@ export default function AdminContentSettings() {
       alert(`오류가 발생했습니다: ${err.message}`);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', 'catalog'); // Store in catalog folder
+
+    try {
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.url) {
+        handleConfigChange('catalog_url', data.url);
+      } else {
+        alert('업로드 실패: ' + (data.error || '알 수 없는 오류'));
+      }
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert('업로드 중 오류가 발생했습니다.');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -170,6 +202,86 @@ export default function AdminContentSettings() {
                     )}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+
+          {/* ----- Catalog Management Section ----- */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', paddingLeft: '4px' }}>
+              <Download color="#475569" size={20} />
+              <h3 style={{ fontWeight: 700, color: '#1e293b', fontSize: '1.15rem', margin: 0 }}>카달로그 파일 관리</h3>
+            </div>
+            
+            <div className="content-card">
+              <div className="p-30">
+                {!config.catalog_url ? (
+                  <div className="admin-form">
+                    <p style={{ margin: '0 0 20px 0', color: '#64748b', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                      현재 등록된 카달로그가 없습니다. 버튼을 활성화하려면 파일을 업로드하거나 URL 주소를 입력하세요.
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'flex-end' }}>
+                      <div className="form-group" style={{ flex: 1, minWidth: '300px', marginBottom: 0 }}>
+                        <label className="label">카달로그 문서 주소 (URL)</label>
+                        <input 
+                          type="text" 
+                          placeholder="가급적 아래 업로드 버튼을 이용해 주세요"
+                          value={config.catalog_url || ''} 
+                          onChange={e => handleConfigChange('catalog_url', e.target.value)} 
+                          className="input"
+                        />
+                      </div>
+                      
+                      <input 
+                        type="file" 
+                        ref={fileInputRef} 
+                        onChange={handleFileUpload} 
+                        accept=".pdf,.doc,.docx,.hwp"
+                        style={{ display: 'none' }} 
+                      />
+                      
+                      <button 
+                        type="button" 
+                        onClick={() => fileInputRef.current?.click()} 
+                        className="btn-add" 
+                        style={{ height: '42px', minWidth: '140px' }}
+                        disabled={isUploading}
+                      >
+                        <Upload size={18} />
+                        <span>{isUploading ? '업로드 중...' : '파일 업로드'}</span>
+                      </button>
+                    </div>
+                    <p style={{ marginTop: '12px', fontSize: '0.75rem', color: '#94a3b8' }}>※ PDF, Word 등 문서 파일을 업로드하시면 홈페이지 하단 카달로그 버튼이 활성화됩니다.</p>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                      <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: '#e0f2fe', color: '#0ea5e9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <FileText size={24} />
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '4px', fontWeight: 600 }}>현재 등록된 카달로그</div>
+                        <div style={{ fontSize: '0.95rem', color: '#0f172a', fontWeight: 600, wordBreak: 'break-all' }}>
+                          {config.catalog_url.split('/').pop() || config.catalog_url}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '4px' }}>{config.catalog_url}</div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px', marginLeft: '20px' }}>
+                      <a href={config.catalog_url} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: '8px 14px', fontSize: '0.85rem', borderRadius: '8px' }}>
+                         미리보기
+                      </a>
+                      <button 
+                        type="button" 
+                        onClick={() => { if(confirm('카달로그 연결을 해제하시겠습니까?')) handleConfigChange('catalog_url', ''); }}
+                        className="btn-icon" 
+                        style={{ background: '#fee2e2', color: '#ef4444', border: '1px solid #fecaca', width: '40px', height: '40px', borderRadius: '8px' }}
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

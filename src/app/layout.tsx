@@ -32,6 +32,11 @@ export const metadata: Metadata = {
       "naver-site-verification": "2eafd9ce903c6e485b21255f8a8c8f7e",
     },
   },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({

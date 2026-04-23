@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Lock, User, Leaf } from 'lucide-react';
 
 export default function AdminLogin() {
@@ -104,12 +105,18 @@ export default function AdminLogin() {
             </label>
           </div>
 
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="error-message" style={{ color: '#ef4444', fontSize: '0.85rem', marginBottom: '16px', textAlign: 'center' }}>{error}</p>}
 
           <button type="submit" className="btn-login" disabled={isLoading}>
             {isLoading ? '로그인 중...' : '로그인'}
           </button>
         </form>
+
+        <div style={{ marginTop: '24px', textAlign: 'center' }}>
+          <Link href="/admin/forgot-password" style={{ fontSize: '0.82rem', color: '#f43f5e', textDecoration: 'none', transition: 'all 0.2s', fontWeight: 500 }} onMouseEnter={(e) => { e.currentTarget.style.color = '#e11d48'; e.currentTarget.style.textDecoration = 'underline'; }} onMouseLeave={(e) => { e.currentTarget.style.color = '#f43f5e'; e.currentTarget.style.textDecoration = 'none'; }}>
+            비밀번호 분실
+          </Link>
+        </div>
       </div>
     </div>
   );

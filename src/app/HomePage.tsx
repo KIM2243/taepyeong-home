@@ -493,8 +493,7 @@ export default function HomePage({ initialConfigs = {}, initialSlides = [], init
               <span className="info-item">사업자등록번호 : 865-86-03320</span>
               <span className="info-sep">/</span>
               <span className="info-item">대표 : 김종윤</span>
-            </div>
-            <div className="info-row">
+              <span className="info-sep">/</span>
               <span className="info-item">주소 : 서울특별시 중랑구 용마산로 419, 4층 401호</span>
             </div>
             <div className="info-row">
