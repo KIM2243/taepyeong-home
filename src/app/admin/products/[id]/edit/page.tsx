@@ -34,6 +34,9 @@ export default function EditProduct() {
   const [imagePreview, setImagePreview] = useState<string>('');
   const [existingImageUrl, setExistingImageUrl] = useState<string>('');
 
+  // 로컬 경로 여부 확인 (Vercel에서는 /uploads/... 경로 사용 불가)
+  const isLocalImageUrl = (url: string) => url.startsWith('/uploads/') || url.startsWith('public/');
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -101,6 +104,12 @@ export default function EditProduct() {
 
     try {
       let finalImageUrl = existingImageUrl;
+
+      // 로컬 경로(/uploads/...)는 Vercel에서 사용 불가 → null 처리
+      if (isLocalImageUrl(finalImageUrl)) {
+        finalImageUrl = '';
+      }
+
       if (imageFile) {
         finalImageUrl = await uploadImage();
       }
@@ -154,6 +163,15 @@ export default function EditProduct() {
         <form onSubmit={handleSubmit} className="admin-form">
           <div className="form-section">
             <label>제품 이미지</label>
+            {/* 기존 이미지가 로컬 경로일 경우 재업로드 안내 */}
+            {existingImageUrl && isLocalImageUrl(existingImageUrl) && !imageFile && (
+              <div style={{
+                background: '#fffbeb', border: '1px solid #f59e0b', borderRadius: '8px',
+                padding: '10px 14px', marginBottom: '10px', color: '#92400e', fontSize: '0.85rem'
+              }}>
+                ⚠️ 기존 이미지가 구버전 로컬 경로입니다. <strong>새 이미지를 업로드</strong>해주세요.
+              </div>
+            )}
             <div className="image-upload-zone">
               {imagePreview ? (
                 <div className="preview-container">

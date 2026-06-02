@@ -1,38 +1,35 @@
 import { NextResponse } from 'next/server';
-import { readdir, stat } from 'fs/promises';
-import path from 'path';
+import { createClient } from '@supabase/supabase-js';
 
+// 로컬 파일시스템 대신 Supabase Storage에서 파일 목록 조회
 export async function GET() {
   try {
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'products');
-    
-    // Ensure directory exists
-    try {
-      await stat(uploadDir);
-    } catch {
-      return NextResponse.json([]); // Return empty if dir doesn't exist yet
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data, error } = await supabase.storage
+      .from('uploads')
+      .list('products', { sortBy: { column: 'created_at', order: 'desc' } });
+
+    if (error) {
+      console.error('Supabase storage list error:', error);
+      return NextResponse.json([]);
     }
 
-    const files = await readdir(uploadDir);
-    
-    // Sort by modified time (newest first)
-    const fileList = await Promise.all(
-      files.map(async (file) => {
-        const filePath = path.join(uploadDir, file);
-        const stats = await stat(filePath);
-        return {
-          name: file,
-          url: `/uploads/products/${file}`,
-          size: stats.size,
-          createdAt: stats.birthtime,
-          mtime: stats.mtime
-        };
-      })
-    );
+    const fileList = (data || []).map((file) => {
+      const { data: urlData } = supabase.storage
+        .from('uploads')
+        .getPublicUrl(`products/${file.name}`);
+      return {
+        name: file.name,
+        url: urlData.publicUrl,
+        size: file.metadata?.size || 0,
+        createdAt: file.created_at,
+      };
+    });
 
-    const sortedFiles = fileList.sort((a, b) => b.mtime.getTime() - a.mtime.getTime());
-
-    return NextResponse.json(sortedFiles);
+    return NextResponse.json(fileList);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
