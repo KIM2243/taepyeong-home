@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://dapi.kakao.com https://t1.daumcdn.net; img-src 'self' data: https://*.kakao.com https://*.daumcdn.net blob:; connect-src 'self' https://*.kakao.com https://*.daumcdn.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://dapi.kakao.com https://t1.daumcdn.net https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https://*.kakao.com https://*.daumcdn.net https://*.supabase.co https://www.googletagmanager.com blob:; connect-src 'self' https://*.kakao.com https://*.daumcdn.net https://*.supabase.co https://www.google-analytics.com https://www.googletagmanager.com https://analytics.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
         }
       ]
     }
