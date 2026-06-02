@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 interface InquiryData {
   name: string;
