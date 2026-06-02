@@ -34,6 +34,3 @@ yarn-error.log*
 .vercel
 .env*.local
 
-# 로컬 업로드 파일 (Vercel 배포 번들에 포함하지 않음)
-/public/uploads/products/
-/public/uploads/catalog/
