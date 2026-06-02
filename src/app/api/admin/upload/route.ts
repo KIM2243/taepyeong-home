@@ -1,63 +1,50 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir, stat } from 'fs/promises';
-import path from 'path';
-
-async function fileExists(path: string) {
-  try {
-    await stat(path);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-async function getAvailableFileName(dirPath: string, originalName: string) {
-  const ext = path.extname(originalName);
-  const baseName = path.basename(originalName, ext);
-  
-  // Basic sanitization
-  const sanitizedBase = baseName.replace(/[\s\W]+/g, '_').replace(/^_+|_+$/g, '');
-  const cleanName = sanitizedBase || 'upload';
-  
-  let fileName = `${cleanName}${ext}`;
-  let filePath = path.join(dirPath, fileName);
-  let counter = 1;
-
-  while (await fileExists(filePath)) {
-    fileName = `${cleanName}(${counter})${ext}`;
-    filePath = path.join(dirPath, fileName);
-    counter++;
-  }
-
-  return fileName;
-}
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     const file = formData.get('file') as File;
-    const folder = formData.get('folder') as string || 'products'; // Default to products
-    
+    const folder = formData.get('folder') as string || 'products';
+
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
+    // Initialize Supabase client (prefer service role key for storage ops)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Ensure upload directory exists
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', folder);
-    await mkdir(uploadDir, { recursive: true });
+    // Generate unique filename
+    const ext = file.name.split('.').pop() || 'jpg';
+    const baseName = file.name.replace(/\.[^/.]+$/, '').replace(/[\s\W]+/g, '_').replace(/^_+|_+$/g, '') || 'upload';
+    const timestamp = Date.now();
+    const fileName = `${baseName}_${timestamp}.${ext}`;
+    const storagePath = `${folder}/${fileName}`;
 
-    // Generate smart filename
-    const fileName = await getAvailableFileName(uploadDir, file.name);
-    const filePath = path.join(uploadDir, fileName);
+    // Upload to Supabase Storage (bucket: "uploads")
+    const { data, error } = await supabase.storage
+      .from('uploads')
+      .upload(storagePath, buffer, {
+        contentType: file.type,
+        upsert: false,
+      });
 
-    await writeFile(filePath, buffer);
+    if (error) {
+      console.error('Supabase upload error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-    // Return the public URL path
-    const publicUrl = `/uploads/${folder}/${fileName}`;
-    return NextResponse.json({ url: publicUrl });
+    // Get public URL
+    const { data: urlData } = supabase.storage
+      .from('uploads')
+      .getPublicUrl(storagePath);
+
+    return NextResponse.json({ url: urlData.publicUrl });
   } catch (error: any) {
     console.error('Upload error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
