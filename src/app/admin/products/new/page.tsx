@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Upload, Save, X } from 'lucide-react';
 import Link from 'next/link';
+import { compressImage } from '@/lib/imageUtils';
 
 export default function NewProduct() {
   const router = useRouter();
@@ -47,13 +48,22 @@ export default function NewProduct() {
   const uploadImage = async (): Promise<string> => {
     if (!imageFile) return '';
     
+    // 이미지 압축 (413 Request Entity Too Large 에러 방지)
+    const compressedFile = await compressImage(imageFile);
+    
     const fd = new FormData();
-    fd.append('file', imageFile);
+    fd.append('file', compressedFile);
 
     const res = await fetch('/api/admin/upload', { method: 'POST', body: fd });
     if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || '이미지 업로드 실패');
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const err = await res.json();
+        throw new Error(err.error || '이미지 업로드 실패');
+      } else {
+        if (res.status === 413) throw new Error('이미지 용량이 너무 큽니다. 더 작은 이미지를 업로드해주세요.');
+        throw new Error(`이미지 업로드 서버 오류 (${res.status})`);
+      }
     }
     const data = await res.json();
     return data.url;
@@ -79,8 +89,14 @@ export default function NewProduct() {
         router.push('/admin/products');
         router.refresh();
       } else {
-        const result = await res.json();
-        throw new Error(result.error || 'API 저장 실패');
+        const contentType = res.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const result = await res.json();
+          throw new Error(result.error || 'API 저장 실패');
+        } else {
+          if (res.status === 413) throw new Error('요청 용량이 너무 큽니다.');
+          throw new Error(`서버 오류 (${res.status}): 요청이 처리되지 않았습니다.`);
+        }
       }
     } catch (err: any) {
       console.error(err);

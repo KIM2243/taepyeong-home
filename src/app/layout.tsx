@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -46,6 +47,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        {/* Google Analytics (GA4) - 접속자 통계 추적 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-RHPFZNHYVD"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-RHPFZNHYVD');
+          `}
+        </Script>
+      </head>
       <body>
         <script
           type="application/ld+json"
