@@ -61,6 +61,10 @@ export default function RootLayout({
             gtag('config', 'G-RHPFZNHYVD');
           `}
         </Script>
+        {/* 새로고침 시 항상 최상단으로 이동 */}
+        <Script id="scroll-restoration" strategy="beforeInteractive">
+          {`if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }`}
+        </Script>
       </head>
       <body>
         <script
