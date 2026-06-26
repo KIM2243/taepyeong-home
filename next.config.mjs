@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost'],
+    domains: ['bnorifyeoknrxzpbilbq.supabase.co'],
   },
   async redirects() {
     return [

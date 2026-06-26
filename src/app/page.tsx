@@ -19,6 +19,7 @@ export default async function Page() {
 
   // 3. Fetch products and group by category
   const products = await prisma.product.findMany({
+    where: { mallType: 'HOME' },
     include: { category: true },
     orderBy: { order: 'asc' }
   });
