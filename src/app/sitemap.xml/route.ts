@@ -6,6 +6,7 @@ export async function GET() {
   const baseUrl = 'https://www.tpfresh.com';
 
   const categories = await prisma.category.findMany({
+    where: { mallType: 'HOME' },
     select: { slug: true, updatedAt: true },
   });
 

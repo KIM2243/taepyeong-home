@@ -6,10 +6,11 @@ export default async function CategoryPage({ params }: { params: { category: str
   const { category: slug } = params;
 
   // Fetch category info and products
-  const category = await prisma.category.findUnique({
-    where: { slug },
+  const category = await prisma.category.findFirst({
+    where: { slug, mallType: 'HOME' },
     include: {
       products: {
+        where: { mallType: 'HOME' },
         orderBy: { createdAt: 'desc' }
       }
     }

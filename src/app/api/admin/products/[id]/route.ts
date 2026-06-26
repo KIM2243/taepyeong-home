@@ -5,8 +5,8 @@ import { prisma } from '@/lib/prisma';
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   try {
-    const product = await prisma.product.findUnique({
-      where: { id },
+    const product = await prisma.product.findFirst({
+      where: { id, mallType: 'HOME' },
       include: { category: true }
     });
     if (!product) return NextResponse.json({ error: '제품을 찾을 수 없습니다.' }, { status: 404 });
@@ -25,10 +25,13 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     // categorySlug → categoryId 변환
     let categoryId = data.categoryId;
     if (!categoryId && data.categorySlug) {
-      const category = await prisma.category.findUnique({ where: { slug: data.categorySlug } });
+      const category = await prisma.category.findFirst({ where: { slug: data.categorySlug, mallType: 'HOME' } });
       if (!category) return NextResponse.json({ error: `카테고리를 찾을 수 없습니다: ${data.categorySlug}` }, { status: 400 });
       categoryId = category.id;
     }
+
+    const existingProduct = await prisma.product.findFirst({ where: { id, mallType: 'HOME' } });
+    if (!existingProduct) return NextResponse.json({ error: '권한이 없습니다.' }, { status: 403 });
 
     const product = await prisma.product.update({
       where: { id },
@@ -55,6 +58,9 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   try {
+    const existingProduct = await prisma.product.findFirst({ where: { id, mallType: 'HOME' } });
+    if (!existingProduct) return NextResponse.json({ error: '권한이 없습니다.' }, { status: 403 });
+    
     await prisma.product.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error: any) {

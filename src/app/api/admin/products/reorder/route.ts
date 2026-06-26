@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     await Promise.all(
       items.map(({ id, order }: { id: string; order: number }) =>
-        prisma.product.update({ where: { id }, data: { order } })
+        prisma.product.updateMany({ where: { id, mallType: 'HOME' }, data: { order } })
       )
     );
 

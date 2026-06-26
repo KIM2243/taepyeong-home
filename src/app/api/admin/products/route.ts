@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   try {
     const products = await prisma.product.findMany({
+      where: { mallType: 'HOME' },
       include: {
         category: true
       },
@@ -22,8 +23,8 @@ export async function POST(req: Request) {
     // categorySlug으로 카테고리 조회 → categoryId 확보
     let categoryId = data.categoryId;
     if (!categoryId && data.categorySlug) {
-      const category = await prisma.category.findUnique({
-        where: { slug: data.categorySlug }
+      const category = await prisma.category.findFirst({
+        where: { slug: data.categorySlug, mallType: 'HOME' }
       });
       if (!category) {
         return NextResponse.json({ error: `카테고리를 찾을 수 없습니다: ${data.categorySlug}` }, { status: 400 });
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
         desc5: data.desc5 || '',
         imageUrl: data.imageUrl || null,
         categoryId: categoryId,
+        mallType: 'HOME',
         order: data.order || 0
       }
     });
